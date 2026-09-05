@@ -38,6 +38,10 @@ Las preguntas que la app tiene que contestar:
 - ¿Cómo vengo estos últimos días?
 - ¿Este mes fue más caro que el anterior? ¿Por qué rubro?
 - ¿Que categoría tiene mas gastos?
+- ¿Cuántos gastos hice cada día de esta semana y cuánto sumó cada día?
+- ¿Cuántos gastos vengo haciendo mes a mes?
+- ¿Cuál es la categoría que más gastos tuvo desde siempre?
+- ¿Cuáles fueron los 10 días de más gasto, y qué se compró esos días?
 
 ## Conceptos del dominio
 
@@ -54,6 +58,12 @@ tiempo: agregar rubros nuevos, dejar de usar otros.
 **Resumen.** La lectura agregada de los gastos en un período. No es un dato que
 se carga, es lo que se obtiene: totales, comparaciones entre períodos y el peso
 relativo de cada categoría sobre el total.
+
+**Reportes.** La sección del SideNav donde esa lectura agregada se mira en
+detalle: la semana día por día, el volumen de gastos mes a mes, la categoría
+que más gastó en todo el histórico y el ranking de los días más caros con el
+detalle de qué se compró. Es una vista de consulta: ahí no se carga nada.
+El detalle de cada reporte está en `spec.md`.
 
 ## Reglas del dominio
 

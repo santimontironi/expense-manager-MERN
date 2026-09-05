@@ -1,1 +1,15 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary: #fefefe;
+  --color-secondary: #ff3baa;
+  --color-tertiary: #f9ec70;
+  --color-quaternary: #dedf00;
+  --color-ink: #2b1020;
+
+  --font-sans: "Quicksand", ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  font-family: "Quicksand", sans-serif;
+}
