@@ -1,0 +1,11 @@
+branch=$(git rev-parse --abbrev-ref HEAD)
+
+if [ "$branch" != "develop" ]; then
+  exit 0
+fi
+
+echo "Verificando backend..."
+(cd backend && npm run lint) || exit 1
+
+echo "Verificando frontend..."
+(cd frontend && npm run lint && npm run build) || exit 1
