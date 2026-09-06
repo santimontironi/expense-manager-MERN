@@ -1,17 +1,12 @@
 import { useGetCategories } from '../../hooks/categories/useGetCategories'
-import Loader, { useMinLoading } from '../ui/Loader'
+import Loader from '../ui/Loader'
 import CategoryCard from './CategoryCard'
 
 const Categories = () => {
-  const { data: categories, isLoading, isError, error } = useGetCategories()
-  const showLoader = useMinLoading(isLoading || !categories)
+  const { data: categories, isLoading } = useGetCategories()
 
-  if (showLoader || !categories) {
+  if (isLoading || !categories) {
     return <Loader />
-  }
-
-  if(isError) {
-    console.error(error.cause)
   }
 
   return (

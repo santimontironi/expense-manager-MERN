@@ -1,12 +1,11 @@
 import { useMe } from "../../hooks/auth/useMe"
-import Loader, { useMinLoading } from "../ui/Loader"
+import Loader from "../ui/Loader"
 import { Navigate } from 'react-router-dom'
 
 const VerifyAuth = ({ children }: { children: React.ReactNode }) => {
     const { data: me, isLoading } = useMe()
-    const showLoader = useMinLoading(isLoading)
 
-    if (showLoader) {
+    if (isLoading) {
         return <Loader />
     }
 
