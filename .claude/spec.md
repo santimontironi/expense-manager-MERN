@@ -8,8 +8,8 @@ separada).
 
 ## Autenticación
 
-- Usuario único, dado de alta manualmente (seed/script). No hay endpoint de
-  registro público.
+- Existe `POST /api/auth/register`, pero no está expuesto en el frontend: se
+  usa manualmente (Postman) para dar de alta al único usuario de la app.
 - Login con `username` + `password`. Sesión vía cookie (ya hay
   `verify-auth` middleware y `cookie-parser` instalados).
 - Todas las rutas de categorías y gastos requieren sesión activa.
@@ -78,6 +78,50 @@ sobre los gastos existentes, no datos que se cargan aparte.
 - Los resúmenes agrupan por `categorySnapshot` (el nombre histórico), no
   por `categoryId` ni por el nombre actual de la categoría — así un
   resumen viejo no cambia si la categoría se renombra después.
+
+## Reportes (sección del SideNav)
+
+La app se navega con un **SideNav**, y una de sus secciones es **Reportes**.
+Es la vista de lectura analítica: no se carga nada ahí, solo se consulta.
+
+Todo lo que muestra sale de agregaciones sobre los gastos existentes y agrupa
+por `categorySnapshot` (el nombre histórico), nunca por el nombre actual de la
+categoría.
+
+La sección muestra cuatro reportes:
+
+### 1. Gastos de la última semana, día por día
+
+Los últimos 7 días, cada uno con **cuántos gastos** hubo y **cuánto suma** ese
+día. Un día sin gastos se muestra igual, en `0` — no se saltea.
+
+### 2. Gastos de los últimos meses
+
+Cuántos gastos se hicieron por mes en los últimos meses, para ver la evolución
+de la constancia de carga y del volumen de gasto. Un mes sin gastos se muestra
+en `0`.
+
+### 3. Categoría con más gastos (histórico)
+
+La categoría que más gastos acumuló considerando **todo el histórico**, no un
+período. Es el único número de la sección que no depende de un rango de fechas.
+
+### 4. Ranking de los 10 días con más gastos
+
+Los 10 días con mayor cantidad de gastos, y por cada uno el detalle de los
+gastos de ese día: **descripción**, **monto** y **categoría**
+(`categorySnapshot`).
+
+### Criterios de aceptación
+
+- Los días y meses sin gastos aparecen en `0`, nunca ausentes de la respuesta
+  (mismo criterio que el resto de los resúmenes).
+- El ranking de días expone el detalle de cada gasto del día, no solo el total.
+- En el detalle del ranking, la descripción es opcional en el modelo: si el
+  gasto no tiene, se muestra el nombre de la categoría en su lugar (nunca un
+  campo vacío).
+- La categoría histórica con más gastos se calcula sobre todos los gastos
+  cargados, sin filtro de período.
 
 ## Fuera de alcance (v1)
 

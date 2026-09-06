@@ -1,5 +1,5 @@
 import app from "./app.js"
-import { connectDB } from "./configs/db.config.js"
+import { connectDB } from "./configs/db-config.js"
 
 const startServer = async () => {
     await connectDB()
