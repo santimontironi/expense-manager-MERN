@@ -11,3 +11,8 @@ export const meService = async () => {
   const response = await api.get('/auth/me');
   return authSchema.parse(response.data);
 }
+
+export const logoutService = async () => {
+  const response = await api.post('/auth/logout');
+  return response.data;
+}

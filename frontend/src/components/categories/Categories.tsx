@@ -1,0 +1,44 @@
+import { useGetCategories } from '../../hooks/categories/useGetCategories'
+import Loader from '../ui/Loader'
+import CategoryCard from './CategoryCard'
+
+const Categories = () => {
+  const { data: categories, isLoading } = useGetCategories()
+
+  if (isLoading || !categories) {
+    return <Loader />
+  }
+
+  return (
+    <section>
+      <header className="border-l-4 border-secondary pl-5 md:pl-6">
+        <h2 className="text-3xl font-semibold text-ink xl:text-4xl">Categorías</h2>
+        <p className="mt-2 max-w-[38ch] leading-relaxed text-ink/70">
+          {categories.length === 1
+            ? '1 rubro para clasificar tus gastos.'
+            : `${categories.length} rubros para clasificar tus gastos.`}
+        </p>
+      </header>
+
+      {categories.length === 0 ? (
+        <div className="mt-10 rounded-3xl border border-dashed border-ink/25 px-6 py-14 text-center md:py-20">
+          <i className="bi bi-tags text-4xl text-ink/40 md:text-5xl"></i>
+          <h3 className="mt-4 text-xl font-semibold text-ink">Todavía no hay categorías</h3>
+          <p className="mx-auto mt-2 max-w-[38ch] leading-relaxed text-ink/70">
+            Creá tu primer rubro para empezar a ordenar en qué se te va la plata.
+          </p>
+        </div>
+      ) : (
+        <ul className="mt-8 grid gap-4 md:mt-10 md:grid-cols-2 md:gap-5 xl:grid-cols-3 2xl:grid-cols-4">
+          {categories.map((category) => (
+            <li key={category._id}>
+              <CategoryCard category={category} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  )
+}
+
+export default Categories
