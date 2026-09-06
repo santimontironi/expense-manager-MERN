@@ -1,1 +1,1 @@
-export type DashboardSections = "reports" | "expenses" | "categories" | "settings";
+export type DashboardSections = "reports" | "expenses" | "categories"

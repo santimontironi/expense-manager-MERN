@@ -34,6 +34,13 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-secondary px-5 py-12">
       <div className="relative w-full max-w-4xl xl:max-w-5xl 2xl:max-w-6xl">
 
+        <img
+          src="/images/dog-mascot.svg"
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute right-8 top-0 hidden w-52 translate-y-[-55%] select-none md:block xl:right-16 xl:w-72 2xl:w-80"
+        />
+
         <div className="relative z-10 rounded-3xl bg-primary shadow-[0_10px_30px_-10px_rgba(0,0,0,0.3),0_45px_80px_-20px_rgba(0,0,0,0.55)] md:grid md:grid-cols-2">
           <div className="relative flex flex-col justify-center gap-6 border-b border-ink/10 px-8 py-14 md:border-b-0 md:border-r md:px-12 md:py-20 xl:px-16 xl:py-28 2xl:px-20">
             <span

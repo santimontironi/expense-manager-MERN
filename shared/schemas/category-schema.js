@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-export const categoryResponseSchema = z.object({
+export const categorySchema = z.object({
     _id: z.string(),
     name: z.string(),
     color: z.string(),

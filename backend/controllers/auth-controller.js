@@ -28,6 +28,15 @@ class AuthController {
             res.status(error.status || 500).json({ error: error.message });
         }
     }
+
+    async logout(req, res) {
+        res.clearCookie('auth_token', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        });
+        res.status(200).json({ message: 'Sesión cerrada correctamente' });
+    }
 }
 
 const authController = new AuthController();
