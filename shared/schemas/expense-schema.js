@@ -13,3 +13,10 @@ export const expenseSchema = z.object({
     createdAt: z.string(),
     updatedAt: z.string(),
 })
+
+export const createExpenseSchema = z.object({
+    amount: z.number().positive(),
+    description: z.string().max(100).optional(),
+    paymentMethod: z.enum(['transfer', 'cash']),
+    categoryId: z.string(),
+})

@@ -8,6 +8,22 @@ class CategoryService {
         return categories;
     }
 
+    async getCategoryById(id) {
+        const result = await categoryRepository.findById(id);
+        if (!result) {
+            const error = new Error('Categoría no encontrada');
+            error.status = 404;
+            throw error;
+        }
+
+        return result;
+    }
+
+    async createCategory(name, color) {
+        const newCategory = await categoryRepository.createCategory(name, color);
+        return newCategory;
+    }
+
 }
 
 const categoryService = new CategoryService();
