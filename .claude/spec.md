@@ -26,6 +26,10 @@ separada).
   que ya no existe, y eso es esperado.
 - Renombrar una categoría no reescribe los gastos ya cargados con el nombre
   anterior (ver snapshot en Gastos).
+- Al presionar una categoría se navega a su detalle: el listado de gastos
+  que tienen esa categoría como `categoryId` (navegación en vivo, no usa
+  `categorySnapshot`). Desde ese listado también se puede borrar un gasto,
+  igual que desde la sección general de Gastos.
 
 ### Criterios de aceptación
 
@@ -33,6 +37,8 @@ separada).
 - Borrar una categoría no borra ni modifica los gastos que la usaban.
 - Una categoría borrada no aparece más en el selector de categorías del
   formulario de carga de gasto (porque el documento ya no existe).
+- El detalle de una categoría muestra solo los gastos con ese `categoryId`,
+  sin importar si la categoría fue renombrada después de cargarlos.
 
 ## Gastos
 
@@ -46,6 +52,9 @@ separada).
 - No hay edición de gastos ya cargados en v1: si algo está mal, se borra y
   se vuelve a cargar. (Evita reabrir la discusión de qué pasa con un
   `categorySnapshot` editado a mitad de camino.)
+- Al presionar un gasto (desde la sección de Gastos o desde el detalle de
+  una categoría) se navega a su detalle, con `amount`, `description`,
+  `paymentMethod`, `categorySnapshot` y fecha (`createdAt`).
 
 ### Criterios de aceptación
 
@@ -55,6 +64,8 @@ separada).
 - Al crear el gasto, `categorySnapshot` queda igual al `name` de la
   categoría en ese momento, sin importar cambios posteriores.
 - Borrar un gasto no afecta la categoría ni otros gastos.
+- El detalle de un gasto muestra `categorySnapshot` (el nombre histórico),
+  no el nombre actual de la categoría.
 
 ## Resúmenes
 
