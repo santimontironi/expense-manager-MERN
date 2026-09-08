@@ -31,6 +31,10 @@ class CategoryRepository {
     async createCategory(name, color) {
         return await Category.create({ name, color });
     }
+
+    async findNameById(id) {
+        return await Category.findById(id).select('name');
+    }
 }
 
 const categoryRepository = new CategoryRepository();

@@ -41,7 +41,7 @@ const SideNav = ({ activeSection, setActiveSection }: SideNavProps) => {
               aria-current={isActive ? "page" : undefined}
               className={`flex cursor-pointer flex-col items-center gap-1 rounded-xl px-3 py-2 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary md:w-full md:flex-row md:justify-center md:gap-3 md:px-3 md:py-3 md:text-sm xl:justify-start xl:px-4 ${
                 isActive
-                  ? "bg-tertiary text-ink"
+                  ? "bg-quaternary text-ink"
                   : "text-ink hover:bg-tertiary/25 hover:text-ink"
               }`}
             >

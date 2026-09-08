@@ -15,8 +15,8 @@ export const expenseSchema = z.object({
 })
 
 export const createExpenseSchema = z.object({
-    amount: z.number().positive(),
+    amount: z.number().positive().min(1, { message: "El importe es requerido" }),
     description: z.string().max(100).optional(),
-    paymentMethod: z.enum(['transfer', 'cash']),
-    categoryId: z.string(),
+    paymentMethod: z.enum(['transfer', 'cash'], { error: "Elegí un método de pago" }),
+    categoryId: z.string().min(1, { message: "La categoría es requerida" }),
 })
