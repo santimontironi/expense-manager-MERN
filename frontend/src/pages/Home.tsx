@@ -9,7 +9,6 @@ const Home = () => {
 
   const [activeSection, setActiveSection] = useState<DashboardSections>("reports")
 
-
   return (
     <section className="flex min-h-screen bg-primary">
       <SideNav activeSection={activeSection} setActiveSection={setActiveSection} />

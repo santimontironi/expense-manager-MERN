@@ -3,11 +3,17 @@ import { useState } from 'react'
 import AddCategoryModal from './AddCategoryModal'
 import Loader from '../ui/Loader'
 import CategoryCard from './CategoryCard'
+import CategoryDetail from './CategoryDetail'
 
 const Categories = () => {
   const { data: categories, isLoading } = useGetCategories()
 
   const [modalOpen, setModalOpen] = useState(false)
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null)
+
+  if (selectedCategoryId) {
+    return <CategoryDetail categoryId={selectedCategoryId} onBack={() => setSelectedCategoryId(null)} />
+  }
 
   if (isLoading || !categories) {
     return <Loader />
@@ -47,10 +53,10 @@ const Categories = () => {
           </p>
         </div>
       ) : (
-        <ul className="mt-8 grid gap-4 md:mt-10 md:grid-cols-2 md:gap-5 xl:grid-cols-3 2xl:grid-cols-4">
+        <ul className="mt-8 grid gap-4 md:mt-10 md:grid-cols-1 md:gap-5 xl:grid-cols-2 2xl:grid-cols-3">
           {categories.map((category) => (
             <li key={category._id}>
-              <CategoryCard category={category} />
+              <CategoryCard category={category} onClick={() => setSelectedCategoryId(category._id)} />
             </li>
           ))}
         </ul>

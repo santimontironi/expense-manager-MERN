@@ -8,7 +8,7 @@ export const expenseSchema = z.object({
     categoryId: z.object({
         _id: z.string(),
         name: z.string(),
-    }),
+    }).nullable(),
     categorySnapshot: z.string(),
     createdAt: z.string(),
     updatedAt: z.string(),

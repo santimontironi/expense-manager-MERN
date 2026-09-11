@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import ParticlesBackground from "../components/ui/ParticlesBackground"
 import { useLogin } from "../hooks/auth/useLogin"
 import type { LoginCredentials } from "../types/auth.types"
 import { useForm } from "react-hook-form"
@@ -31,7 +32,9 @@ const Login = () => {
   }, [isMeLoading, meData, navigate])
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-secondary px-5 py-12 xl:py-8 2xl:py-12">
+    <div className="relative isolate min-h-screen flex items-center justify-center bg-gradient-to-br from-secondary to-tertiary px-5 py-12 xl:py-8 2xl:py-12">
+      <ParticlesBackground />
+
       <div className="relative w-full max-w-4xl xl:max-w-5xl 2xl:max-w-6xl">
 
         <img
