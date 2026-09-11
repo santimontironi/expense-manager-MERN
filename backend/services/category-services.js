@@ -24,6 +24,20 @@ class CategoryService {
         return newCategory;
     }
 
+    async deleteCategory(id){
+        const categoryNotFounded = await categoryRepository.findById(id)
+
+        if(!categoryNotFounded){
+            const error = new Error('Categoría no encontrada');
+            error.status = 404;
+            throw error;
+        }
+
+        const categoryDeleted = await categoryRepository.deleteCategory(id)
+
+        return categoryDeleted
+    }
+
 }
 
 const categoryService = new CategoryService();

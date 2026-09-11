@@ -35,6 +35,10 @@ class CategoryRepository {
     async findNameById(id) {
         return await Category.findById(id).select('name');
     }
+
+    async deleteCategory(id) {
+        return await Category.findByIdAndDelete(id)
+    }
 }
 
 const categoryRepository = new CategoryRepository();

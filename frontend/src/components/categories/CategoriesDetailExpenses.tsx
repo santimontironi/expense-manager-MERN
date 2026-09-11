@@ -15,9 +15,8 @@ const timeFormatter = new Intl.DateTimeFormat('es-AR', {
   minute: '2-digit',
 })
 
-const ExpenseCard = ({ expense }: { expense: Expense }) => {
+const CategoriesDetailExpenses = ({ expense }: { expense: Omit<Expense, 'categoryId'> }) => {
   const isTransfer = expense.paymentMethod === 'transfer'
-  const categoryDeleted = !expense.categoryId
 
   return (
     <article className="flex flex-wrap items-center gap-4 rounded-3xl border border-ink/40 bg-primary px-5 py-4 hover:border-secondary/50 md:flex-nowrap md:px-6 md:py-5 shadow-[5px_5px_5px_rgba(0,0,0,0.30)]">
@@ -29,13 +28,9 @@ const ExpenseCard = ({ expense }: { expense: Expense }) => {
       </span>
 
       <div className="min-w-0 flex-1">
-        <h3 className="truncate text-base font-semibold text-ink md:text-lg">{expense.description}</h3>
-        {expense.description && (
-          <p className="mt-1 truncate text-sm font-normal text-ink/60 flex flex-col xl:flex-row gap-1">
-            <span>{expense.categorySnapshot}</span>
-            <span>{categoryDeleted && ' (categoría eliminada)'}</span>
-          </p>
-        )}
+        <h3 className="truncate text-base font-semibold text-ink md:text-lg">
+          {expense.description || expense.categorySnapshot}
+        </h3>
       </div>
 
       <div className="hidden shrink-0 flex-col items-end gap-0.5 text-sm font-normal text-ink/80 md:flex">
@@ -60,4 +55,4 @@ const ExpenseCard = ({ expense }: { expense: Expense }) => {
   )
 }
 
-export default ExpenseCard
+export default CategoriesDetailExpenses

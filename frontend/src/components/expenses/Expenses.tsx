@@ -8,10 +8,17 @@ const Expenses = () => {
   const { data: expenses, isLoading } = useGetExpenses()
 
   const [modalOpen, setModalOpen] = useState(false)
+  const [order, setOrder] = useState<'recent' | 'oldest'>('recent')
 
   if (isLoading || !expenses) {
     return <Loader />
   }
+
+  const sortedExpenses = [...expenses].sort((a, b) =>
+    order === 'recent'
+      ? new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      : new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+  )
 
   return (
     <section>
@@ -28,14 +35,45 @@ const Expenses = () => {
           </p>
         </div>
 
-        <button
-          onClick={() => setModalOpen(true)}
-          type="button"
-          className="flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xl bg-quaternary px-5 py-3 font-semibold text-ink transition-colors hover:bg-tertiary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/40 focus-visible:ring-offset-2 md:w-auto"
-        >
-          <i className="bi bi-plus-lg"></i>
-          Crear gasto
-        </button>
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-4">
+          {expenses.length > 0 && (
+            <div className="flex shrink-0 gap-1 rounded-xl border border-ink/15 p-1">
+              <button
+                onClick={() => setOrder('recent')}
+                type="button"
+                className={`flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-normal transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/40 ${
+                  order === 'recent'
+                    ? 'bg-secondary/15 text-ink'
+                    : 'text-ink/60 hover:text-ink'
+                }`}
+              >
+                <i className="bi bi-sort-down"></i>
+                Más recientes
+              </button>
+              <button
+                onClick={() => setOrder('oldest')}
+                type="button"
+                className={`flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-normal transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/40 ${
+                  order === 'oldest'
+                    ? 'bg-secondary/15 text-ink'
+                    : 'text-ink/60 hover:text-ink'
+                }`}
+              >
+                <i className="bi bi-sort-up"></i>
+                Más antiguos
+              </button>
+            </div>
+          )}
+
+          <button
+            onClick={() => setModalOpen(true)}
+            type="button"
+            className="flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xl bg-quaternary px-5 py-3 font-semibold text-ink transition-colors hover:bg-tertiary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/40 focus-visible:ring-offset-2 md:w-auto"
+          >
+            <i className="bi bi-plus-lg"></i>
+            Crear gasto
+          </button>
+        </div>
       </header>
 
       {expenses.length === 0 ? (
@@ -48,7 +86,7 @@ const Expenses = () => {
         </div>
       ) : (
         <ul className="mt-8 flex flex-col gap-3 md:mt-10 md:gap-4">
-          {expenses.map((expense) => (
+          {sortedExpenses.map((expense) => (
             <li key={expense._id}>
               <ExpenseCard expense={expense} />
             </li>

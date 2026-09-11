@@ -9,6 +9,7 @@ class ExpenseRepository {
     async findAllExpenses() {
         return await Expense.find().populate('categoryId', 'name').sort({ createdAt: -1 });
     }
+
 }
 
 const expenseRepository = new ExpenseRepository();

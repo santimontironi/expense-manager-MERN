@@ -9,3 +9,4 @@ export const router = Router();
 router.get('/', verifyAuth, categoryController.getAllCategories);
 router.get('/:id', verifyAuth, categoryController.getCategoryById);
 router.post('/', verifyAuth, validateBody(createCategorySchema), categoryController.addCategory);
+router.delete('/:id', verifyAuth, categoryController.deleteCategory)

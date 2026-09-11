@@ -20,6 +20,28 @@ class CategoryController {
         }
     }
 
+    async deleteCategory(req, res) {
+        try {
+            const { id } = req.params;
+            const category = await categoryService.deleteCategory(id);
+            res.status(200).json(category);
+        } catch (error) {
+            res.status(error.status || 500).json({ error: error.message });
+        }
+    }
+
+    async editCategory(req,res){
+        try{
+            const { id } = req.params
+            const { name, color } = req.body
+            const categoryEdited = await categoryService.editCategory(id, name, color)
+            return res.status(200).json(categoryEdited)
+
+        }catch (error) {
+            res.status(error.status || 500).json({ error: error.message });
+        }
+    }
+
     async addCategory(req, res) {
         try {
             const { name, color } = req.body;
