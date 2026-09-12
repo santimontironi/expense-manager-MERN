@@ -49,6 +49,25 @@ const AddExpenseModal = ({ onClose }: AddExpenseModalProps) => {
 
                 <form className="mt-7 flex flex-col gap-5" onSubmit={handleSubmit(submitForm)}>
                     <div className="flex flex-col gap-2">
+                        <label htmlFor="name" className="text-sm font-normal text-ink/70">
+                            Nombre
+                        </label>
+                        <div className="flex items-center gap-3 rounded-xl border border-ink/15 px-4 py-3 transition-colors focus-within:border-secondary focus-within:ring-2 focus-within:ring-secondary/20">
+                            <i className="bi bi-card-heading text-ink/40"></i>
+                            <input
+                                id="name"
+                                type="text"
+                                placeholder="Almuerzo, nafta, alquiler..."
+                                className="w-full bg-transparent text-sm font-normal text-ink outline-none placeholder:text-ink/60"
+                                {...register("name")}
+                            />
+                        </div>
+                        {errors.name && (
+                            <span className="text-sm text-red-600">{errors.name.message}</span>
+                        )}
+                    </div>
+
+                    <div className="flex flex-col gap-2">
                         <label htmlFor="amount" className="text-sm font-normal text-ink/70">
                             Monto
                         </label>
@@ -71,14 +90,14 @@ const AddExpenseModal = ({ onClose }: AddExpenseModalProps) => {
 
                     <div className="flex flex-col gap-2">
                         <label htmlFor="description" className="text-sm font-normal text-ink/70">
-                            Descripción
+                            Descripción <span className="text-ink/50">(opcional)</span>
                         </label>
                         <div className="flex items-center gap-3 rounded-xl border border-ink/15 px-4 py-3 transition-colors focus-within:border-secondary focus-within:ring-2 focus-within:ring-secondary/20">
                             <i className="bi bi-card-text text-ink/40"></i>
                             <input
                                 id="description"
                                 type="text"
-                                placeholder="Almuerzo, nafta, alquiler..."
+                                placeholder="Detalle opcional del gasto"
                                 className="w-full bg-transparent text-sm font-normal text-ink outline-none placeholder:text-ink/60"
                                 {...register("description")}
                             />

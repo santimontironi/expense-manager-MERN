@@ -13,7 +13,7 @@ const CategoryCard = ({ category, onClick }: { category: Category; onClick?: () 
   const count = category.expenseCount
   const { mutate: deleteCategory, isPending } = useDeleteCategory()
 
-  const confirmDelete = async (e: React.MouseEvent) => {
+  const handleDelete = async (e: React.MouseEvent) => {
     e.stopPropagation()
 
     const result = await Swal.fire({
@@ -61,23 +61,23 @@ const CategoryCard = ({ category, onClick }: { category: Category; onClick?: () 
         style={{ backgroundColor: category.color }}
       ></span>
 
-      <div className="flex min-w-0 flex-1 items-center gap-3 px-5 py-5 md:px-6 md:py-6">
-        <div className="min-w-0 flex-1">
-          <h3 className="truncate text-lg font-semibold text-ink md:text-xl">
+      <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-3 px-4 py-4 md:flex-nowrap md:px-6 md:py-6">
+        <div className="min-w-0 flex-1 basis-full md:basis-auto">
+          <h3 className="text-lg font-semibold wrap-break-words text-ink md:truncate md:text-xl">
             {category.name}
           </h3>
-          <p className="mt-1 truncate text-sm font-normal text-ink/60">
+          <p className="mt-1 text-sm font-normal text-ink/60 md:truncate">
             Creada el {dateFormatter.format(new Date(category.createdAt))}
           </p>
         </div>
 
         {count !== undefined && (
-          <span className="shrink-0 rounded-xl bg-ink/5 px-3 py-1.5 text-base font-semibold text-ink md:text-lg">
+          <span className="shrink-0 rounded-xl bg-ink/5 px-3 py-1.5 text-sm font-semibold text-ink md:text-lg">
             {count === 1 ? '1 gasto' : `${count} gastos`}
           </span>
         )}
 
-        <div className="flex shrink-0 items-center gap-1">
+        <div className="ml-auto flex shrink-0 items-center gap-1">
           <button
             type="button"
             aria-label={`Editar categoría ${category.name}`}
@@ -88,7 +88,7 @@ const CategoryCard = ({ category, onClick }: { category: Category; onClick?: () 
 
           <button
             type="button"
-            onClick={confirmDelete}
+            onClick={handleDelete}
             disabled={isPending}
             aria-label={`Eliminar categoría ${category.name}`}
             className="grid size-8 shrink-0 cursor-pointer place-items-center rounded-full text-ink/35 transition-colors hover:bg-red-500/10 hover:text-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600/40 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"

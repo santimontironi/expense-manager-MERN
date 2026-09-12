@@ -72,7 +72,8 @@ igual con o sin reasignar antes.
 
 ## Gastos
 
-- Un gasto tiene: `amount`, `description` (opcional), `paymentMethod`
+- Un gasto tiene: `amount`, `name` (requerido, es el título con el que se
+  lista el gasto), `description` (opcional, detalle extra), `paymentMethod`
   (`transfer` | `cash`), `categoryId` + `categorySnapshot` (nombre de la
   categoría al momento de cargar el gasto).
 - La fecha del gasto es la fecha de carga (`createdAt`). No se puede cargar
@@ -83,7 +84,7 @@ igual con o sin reasignar antes.
   se vuelve a cargar. (Evita reabrir la discusión de qué pasa con un
   `categorySnapshot` editado a mitad de camino.)
 - Al presionar un gasto (desde la sección de Gastos o desde el detalle de
-  una categoría) se navega a su detalle, con `amount`, `description`,
+  una categoría) se navega a su detalle, con `amount`, `name`, `description`,
   `paymentMethod`, `categorySnapshot` y fecha (`createdAt`).
 - En el listado de gastos, si la categoría del gasto ya no existe (fue
   borrada), se muestra un indicador "(categoría eliminada)" junto al
@@ -104,6 +105,8 @@ igual con o sin reasignar antes.
 - Crear gasto sin `categoryId` → error de validación (todo gasto pertenece
   a una categoría, sin excepción).
 - Crear gasto con `amount <= 0` → error de validación.
+- Crear gasto sin `name` (o con menos de 2 caracteres) → error de validación.
+  `description` puede venir vacía.
 - Al crear el gasto, `categorySnapshot` queda igual al `name` de la
   categoría en ese momento, sin importar cambios posteriores.
 - Borrar un gasto no afecta la categoría ni otros gastos.
