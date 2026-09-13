@@ -1,16 +1,35 @@
+import { useEffect, useRef } from "react"
 import { ParticlesProvider, Particles } from "@tsparticles/react"
 import { loadSlim } from "@tsparticles/slim"
-import type { Engine } from "@tsparticles/engine"
+import type { Container, Engine } from "@tsparticles/engine"
 
 const initParticles = async (engine: Engine) => {
   await loadSlim(engine)
 }
 
 const ParticlesBackground = () => {
+  // tsparticles carga el canvas de forma asíncrona; si el componente ya se
+  // desmontó cuando termina de cargar, no encuentra su div y crea uno nuevo
+  // suelto en <body> que nunca se limpia. Este ref detecta ese caso y lo
+  // destruye apenas termina de cargar.
+  const isMountedRef = useRef(true)
+
+  useEffect(() => {
+    isMountedRef.current = true
+    return () => {
+      isMountedRef.current = false
+    }
+  }, [])
+
   return (
     <ParticlesProvider init={initParticles}>
       <Particles
         className="absolute inset-0"
+        particlesLoaded={(container?: Container) => {
+          if (!isMountedRef.current) {
+            container?.destroy()
+          }
+        }}
         options={{
           background: { color: "transparent" },
           fullScreen: { enable: false },

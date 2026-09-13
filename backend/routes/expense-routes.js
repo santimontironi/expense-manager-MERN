@@ -8,3 +8,4 @@ export const router = Router();
 
 router.post('/', verifyAuth, validateBody(createExpenseSchema), expenseController.createExpense);
 router.get('/', verifyAuth, expenseController.getAllExpenses);
+router.delete('/:id', verifyAuth, expenseController.deleteExpense);

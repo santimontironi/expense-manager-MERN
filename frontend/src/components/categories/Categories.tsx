@@ -24,7 +24,7 @@ const Categories = () => {
 
       {modalOpen && <AddCategoryModal onClose={() => setModalOpen(false)} />}
 
-      <header className="flex flex-col gap-5 border-l-4 border-secondary pl-5 md:flex-row md:items-end md:justify-between md:gap-6 md:pl-6">
+      <header className="flex flex-col gap-4 border-l-4 border-secondary pl-4 md:flex-row md:items-end md:justify-between md:gap-6 md:pl-6">
         <div>
           <h2 className="text-3xl font-semibold text-ink xl:text-4xl">Categorías</h2>
           <p className="mt-2 max-w-[38ch] leading-relaxed text-ink/70">
@@ -37,7 +37,7 @@ const Categories = () => {
         <button
           onClick={() => setModalOpen(true)}
           type="button"
-          className="flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xl bg-quaternary px-5 py-3 font-semibold text-ink transition-colors hover:bg-tertiary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/40 focus-visible:ring-offset-2 md:w-auto"
+          className="flex w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xl bg-quaternary px-5 py-3 font-semibold text-ink transition-colors hover:bg-tertiary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/40 focus-visible:ring-offset-2 md:w-auto"
         >
           <i className="bi bi-plus-lg"></i>
           Crear categoría
@@ -53,7 +53,7 @@ const Categories = () => {
           </p>
         </div>
       ) : (
-        <ul className="mt-8 grid gap-4 md:mt-10 md:grid-cols-1 md:gap-5 xl:grid-cols-2 2xl:grid-cols-3">
+        <ul className="mt-6 grid gap-3 md:mt-10 md:grid-cols-1 md:gap-5 xl:grid-cols-2 2xl:grid-cols-3">
           {categories.map((category) => (
             <li key={category._id}>
               <CategoryCard category={category} onClick={() => setSelectedCategoryId(category._id)} />

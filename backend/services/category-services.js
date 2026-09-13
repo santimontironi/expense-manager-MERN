@@ -19,9 +19,20 @@ class CategoryService {
         return result;
     }
 
-    async createCategory(name, color) {
-        const newCategory = await categoryRepository.createCategory(name, color);
+    async createCategory(name, color, spendingLimit) {
+        const newCategory = await categoryRepository.createCategory(name, color, spendingLimit);
         return newCategory;
+    }
+
+    async editCategory(id, name, color, spendingLimit) {
+        const category = await categoryRepository.findById(id);
+        if (!category) {
+            const error = new Error('Categoría no encontrada');
+            error.status = 404;
+            throw error;
+        }
+
+        return await categoryRepository.editCategory(id, name, color, spendingLimit);
     }
 
     async deleteCategory(id){

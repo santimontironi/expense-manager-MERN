@@ -19,5 +19,10 @@ export const getCategoryByIdService = async (id: string) => {
 
 export const deleteCategoryService = async (id: string) => {
     const response = await api.delete(`/categories/${id}`)
-    return categorySchema.parse(response.data)   
+    return categorySchema.parse(response.data)
+}
+
+export const editCategoryService = async ({ id, data }: { id: string; data: CreateCategoryCredentials }) => {
+    const response = await api.patch(`/categories/${id}`, data)
+    return categorySchema.parse(response.data)
 }

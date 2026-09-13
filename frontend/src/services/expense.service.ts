@@ -11,3 +11,8 @@ export const getAllExpensesService = async () => {
     const response = await api.get("/expenses")
     return expenseSchema.array().parse(response.data)
 }
+
+export const deleteExpenseService = async (id: string) => {
+    const response = await api.delete(`/expenses/${id}`)
+    return expenseSchema.parse(response.data)
+}

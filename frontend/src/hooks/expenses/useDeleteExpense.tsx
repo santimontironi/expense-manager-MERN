@@ -1,14 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createExpenseService } from "../../services/expense.service";
+import { deleteExpenseService } from "../../services/expense.service";
 
-export const useAddExpense = () => {
+export const useDeleteExpense = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: createExpenseService,
+    mutationFn: deleteExpenseService,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["expenses"] });
       queryClient.invalidateQueries({ queryKey: ["categories"] });
+      queryClient.invalidateQueries({ queryKey: ["expenses"] });
       queryClient.invalidateQueries({ queryKey: ["reports"] });
     },
   });

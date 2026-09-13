@@ -32,7 +32,7 @@ const Login = () => {
   }, [isMeLoading, meData, navigate])
 
   return (
-    <div className="relative isolate min-h-screen flex items-center justify-center bg-gradient-to-br from-secondary to-tertiary px-5 py-12 xl:py-8 2xl:py-12">
+    <div className="relative isolate min-h-screen flex items-center justify-center bg-linear-to-br from-secondary to-tertiary px-5 py-12 xl:py-8 2xl:py-12">
       <ParticlesBackground />
 
       <div className="relative w-full max-w-4xl xl:max-w-5xl 2xl:max-w-6xl">

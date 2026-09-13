@@ -28,8 +28,12 @@ class CategoryRepository {
         ]);
     }
 
-    async createCategory(name, color) {
-        return await Category.create({ name, color });
+    async createCategory(name, color, spendingLimit) {
+        return await Category.create({ name, color, spendingLimit });
+    }
+
+    async editCategory(id, name, color, spendingLimit) {
+        return await Category.findByIdAndUpdate(id, { name, color, spendingLimit }, { returnDocument: 'after' });
     }
 
     async findNameById(id) {

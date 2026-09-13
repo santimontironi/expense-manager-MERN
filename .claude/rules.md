@@ -22,6 +22,8 @@
 - No dejar código muerto, comentado o "por las dudas". Lo que no se usa, se borra.
 - Sin comentarios que expliquen el qué (el código ya lo dice). Solo comentar el
   porqué cuando no es obvio (una restricción rara, un workaround puntual).
+- Excepción: si el usuario pide explícitamente comentarios explicando el
+  código, se agregan aunque expliquen el qué.
 
 ## TypeScript sin ruido
 
