@@ -1,33 +1,12 @@
 import type { Expense } from '../../types/expense.types'
+import { currencyFormatter } from '../../utils/currency'
+import { shortDateFormatter, timeFormatter } from '../../utils/date'
 
-const currencyFormatter = new Intl.NumberFormat('es-AR', {
-  style: 'currency',
-  currency: 'ARS',
-})
+const ExpenseCard = ({ expense, onDelete, isDeleting, showCategory = true }: { expense: Expense; onDelete: () => void; isDeleting?: boolean; showCategory?: boolean }) => {
 
-const dateFormatter = new Intl.DateTimeFormat('es-AR', {
-  day: '2-digit',
-  month: 'short',
-})
-
-const timeFormatter = new Intl.DateTimeFormat('es-AR', {
-  hour: '2-digit',
-  minute: '2-digit',
-})
-
-const ExpenseCard = ({
-  expense,
-  onDelete,
-  isDeleting,
-  showCategory = true,
-}: {
-  expense: Expense
-  onDelete: () => void
-  isDeleting?: boolean
-  showCategory?: boolean
-}) => {
   const isTransfer = expense.paymentMethod === 'transfer'
   const categoryDeleted = !expense.categoryId
+  const categoryRenamed = !!expense.categoryId && expense.categoryId.name !== expense.categorySnapshot
 
   return (
     <article className="flex flex-wrap items-center gap-x-3 gap-y-3 rounded-3xl border border-ink/40 bg-primary px-4 py-4 hover:border-secondary/50 md:flex-nowrap md:px-6 md:py-5 shadow-[5px_5px_5px_rgba(0,0,0,0.30)]">
@@ -49,12 +28,17 @@ const ExpenseCard = ({
               {expense.categorySnapshot}
             </span>
             {categoryDeleted && <span className="text-xs font-normal text-ink/40">(categoría eliminada)</span>}
+            {categoryRenamed && (
+              <span className="text-xs font-bold text-ink/70">
+                (categoría editada, ahora {expense.categoryId!.name})
+              </span>
+            )}
           </p>
         )}
       </div>
 
       <div className="hidden shrink-0 flex-col items-end gap-0.5 text-sm font-normal text-ink/80 md:flex">
-        <p> <span className='font-bold'>Fecha:</span> {dateFormatter.format(new Date(expense.createdAt))}</p>
+        <p> <span className='font-bold'>Fecha:</span> {shortDateFormatter.format(new Date(expense.createdAt))}</p>
         <p> <span className='font-bold'>Hora:</span> {timeFormatter.format(new Date(expense.createdAt))}</p>
       </div>
 
@@ -64,7 +48,7 @@ const ExpenseCard = ({
         </p>
         <div className="flex flex-col gap-0.5 text-right md:hidden">
           <p className="text-xs font-normal text-ink/60">
-            <span className='font-bold'>Fecha:</span> {dateFormatter.format(new Date(expense.createdAt))}
+            <span className='font-bold'>Fecha:</span> {shortDateFormatter.format(new Date(expense.createdAt))}
           </p>
           <p className="text-xs font-normal text-ink/60">
             <span className='font-bold'>Hora:</span> {timeFormatter.format(new Date(expense.createdAt))}

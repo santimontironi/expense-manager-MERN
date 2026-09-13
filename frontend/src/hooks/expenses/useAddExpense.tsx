@@ -8,6 +8,8 @@ export const useAddExpense = () => {
     mutationFn: createExpenseService,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["expenses"] });
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
+      queryClient.invalidateQueries({ queryKey: ["reports"] });
     },
   });
 };

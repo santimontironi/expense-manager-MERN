@@ -1,29 +1,37 @@
 import { useForm } from "react-hook-form"
-import { useNewCategory } from "../../hooks/categories/useNewCategory"
-import type { CreateCategoryCredentials } from "../../types/category.types"
-import { createCategorySchema } from "../../../../shared/schemas/category-schema"
+import { useEditCategory } from "../../hooks/categories/useEditCategory"
+import type { Category, CreateCategoryCredentials } from "../../types/category.types"
+import { editCategorySchema } from "../../../../shared/schemas/category-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 
-interface AddCategoryModalProps {
+interface EditCategoryModalProps {
+    category: Category
     onClose: () => void
 }
 
-const AddCategoryModal = ({ onClose }: AddCategoryModalProps) => {
+const EditCategoryModal = ({ category, onClose }: EditCategoryModalProps) => {
 
     const { register, handleSubmit, formState: { errors } } = useForm<CreateCategoryCredentials>({
-        defaultValues: { color: "#ff3baa" },
-        resolver: zodResolver(createCategorySchema)
+        defaultValues: {
+            name: category.name,
+            color: category.color,
+            spendingLimit: category.spendingLimit,
+        },
+        resolver: zodResolver(editCategorySchema)
     })
 
-    const { mutate: newCategory, isPending } = useNewCategory()
+    const { mutate: editCategory, isPending } = useEditCategory()
 
     const submitForm = (data: CreateCategoryCredentials) => {
-        newCategory(data, { onSuccess: onClose })
+        editCategory({ id: category._id, data }, { onSuccess: onClose })
     }
 
     return (
         <div
-            onClick={onClose}
+            onClick={(e) => {
+                e.stopPropagation()
+                onClose()
+            }}
             className="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 px-5 py-12"
         >
             <div
@@ -40,10 +48,10 @@ const AddCategoryModal = ({ onClose }: AddCategoryModalProps) => {
                 </button>
 
                 <h2 className="pr-8 text-2xl font-semibold text-ink md:text-3xl">
-                    Nueva categoría
+                    Editar categoría
                 </h2>
                 <p className="mt-2 max-w-[38ch] leading-relaxed text-ink/70">
-                    Elegí un nombre y un color para identificar tus gastos.
+                    Actualizá el nombre, color o límite mensual de esta categoría.
                 </p>
 
                 <form className="mt-7 flex flex-col gap-5" onSubmit={handleSubmit(submitForm)}>
@@ -116,7 +124,7 @@ const AddCategoryModal = ({ onClose }: AddCategoryModalProps) => {
                         disabled={isPending}
                         className="mt-1 cursor-pointer rounded-xl bg-quaternary py-3.5 font-semibold text-ink transition-colors hover:bg-tertiary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/40 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
                     >
-                        {isPending ? "Creando..." : "Crear categoría"}
+                        {isPending ? "Guardando..." : "Guardar cambios"}
                     </button>
                 </form>
             </div>
@@ -124,4 +132,4 @@ const AddCategoryModal = ({ onClose }: AddCategoryModalProps) => {
     )
 }
 
-export default AddCategoryModal
+export default EditCategoryModal

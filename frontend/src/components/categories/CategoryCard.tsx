@@ -1,17 +1,16 @@
+import { useState } from 'react'
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 import type { Category } from '../../types/category.types'
 import { useDeleteCategory } from '../../hooks/categories/useDeleteCategory'
-
-const dateFormatter = new Intl.DateTimeFormat('es-AR', {
-  day: '2-digit',
-  month: 'short',
-  year: 'numeric',
-})
+import EditCategoryModal from './EditCategoryModal'
+import { currencyFormatter } from '../../utils/currency'
+import { dateFormatter } from '../../utils/date'
 
 const CategoryCard = ({ category, onClick }: { category: Category; onClick?: () => void }) => {
   const count = category.expenseCount
   const { mutate: deleteCategory, isPending } = useDeleteCategory()
+  const [editOpen, setEditOpen] = useState(false)
 
   const handleDelete = async (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -55,6 +54,10 @@ const CategoryCard = ({ category, onClick }: { category: Category; onClick?: () 
       onClick={onClick}
       className="flex cursor-pointer overflow-hidden rounded-3xl border-2 border-ink/70 bg-primary shadow-md transition-colors hover:border-secondary hover:shadow-lg"
     >
+      {editOpen && (
+        <EditCategoryModal category={category} onClose={() => setEditOpen(false)} />
+      )}
+
       <span
         aria-hidden="true"
         className="w-4 shrink-0 md:w-7 xl:w-15"
@@ -69,6 +72,9 @@ const CategoryCard = ({ category, onClick }: { category: Category; onClick?: () 
           <p className="mt-1 text-sm font-normal text-ink/60 md:truncate">
             Creada el {dateFormatter.format(new Date(category.createdAt))}
           </p>
+          <p className="mt-1 text-sm font-normal text-ink/60 md:truncate">
+            Límite mensual: {currencyFormatter.format(category.spendingLimit)}
+          </p>
         </div>
 
         {count !== undefined && (
@@ -80,6 +86,10 @@ const CategoryCard = ({ category, onClick }: { category: Category; onClick?: () 
         <div className="ml-auto flex shrink-0 items-center gap-1">
           <button
             type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              setEditOpen(true)
+            }}
             aria-label={`Editar categoría ${category.name}`}
             className="grid size-8 shrink-0 cursor-pointer place-items-center rounded-full text-ink/35 transition-colors hover:bg-secondary/10 hover:text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/40 focus-visible:ring-offset-2"
           >

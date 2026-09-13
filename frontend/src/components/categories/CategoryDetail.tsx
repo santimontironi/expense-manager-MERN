@@ -4,12 +4,8 @@ import ExpenseCard from "../expenses/ExpenseCard"
 import Loader from "../ui/Loader"
 import { useGetCategoryById } from "../../hooks/categories/useGetCategoryById"
 import { useDeleteExpense } from "../../hooks/expenses/useDeleteExpense"
-
-const dateFormatter = new Intl.DateTimeFormat('es-AR', {
-  day: '2-digit',
-  month: 'short',
-  year: 'numeric',
-})
+import { currencyFormatter } from "../../utils/currency"
+import { dateFormatter } from "../../utils/date"
 
 const CategoryDetail = ({ categoryId, onBack }: { categoryId: string; onBack: () => void }) => {
   const { data: categoryDetail, isLoading } = useGetCategoryById(categoryId)
@@ -78,7 +74,8 @@ const CategoryDetail = ({ categoryId, onBack }: { categoryId: string; onBack: ()
           <h2 className="truncate text-3xl font-semibold text-ink xl:text-4xl">{category.name}</h2>
           <p className="mt-2 text-ink/70">
             Creada el {dateFormatter.format(new Date(category.createdAt))} ·{' '}
-            {expenses.length === 1 ? '1 gasto registrado' : `${expenses.length} gastos registrados`}
+            {expenses.length === 1 ? '1 gasto registrado' : `${expenses.length} gastos registrados`} ·{' '}
+            Límite mensual: {currencyFormatter.format(category.spendingLimit)}
           </p>
         </div>
       </header>

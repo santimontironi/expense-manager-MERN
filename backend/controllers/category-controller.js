@@ -33,8 +33,8 @@ class CategoryController {
     async editCategory(req,res){
         try{
             const { id } = req.params
-            const { name, color } = req.body
-            const categoryEdited = await categoryService.editCategory(id, name, color)
+            const { name, color, spendingLimit } = req.body
+            const categoryEdited = await categoryService.editCategory(id, name, color, spendingLimit)
             return res.status(200).json(categoryEdited)
 
         }catch (error) {
@@ -44,9 +44,20 @@ class CategoryController {
 
     async addCategory(req, res) {
         try {
-            const { name, color } = req.body;
-            const newCategory = await categoryService.createCategory(name, color);
+            const { name, color, spendingLimit } = req.body;
+            const newCategory = await categoryService.createCategory(name, color, spendingLimit);
             res.status(201).json(newCategory);
+        } catch (error) {
+            res.status(error.status || 500).json({ error: error.message });
+        }
+    }
+
+    async updateSpendingLimit(req, res) {
+        try {
+            const { id } = req.params;
+            const { spendingLimit } = req.body;
+            const category = await categoryService.updateSpendingLimit(id, spendingLimit);
+            res.status(200).json(category);
         } catch (error) {
             res.status(error.status || 500).json({ error: error.message });
         }

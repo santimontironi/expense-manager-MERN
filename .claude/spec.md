@@ -161,7 +161,7 @@ por `categoryId`, mostrando el nombre **actual** de la categoría, no
 borrada (`categoryId` ya no existe), se usa el `categorySnapshot` de esos
 gastos como nombre del grupo, mismo fallback que en Resúmenes.
 
-La sección muestra cuatro reportes:
+La sección muestra cinco reportes:
 
 ### 1. Gastos de la última semana, día por día
 
@@ -180,16 +180,26 @@ transcurrir contra meses completos distorsiona la lectura). La cantidad de
 gastos del mes en curso se muestra aparte, en otra sección de Reportes,
 no dentro de este gráfico.
 
-### 3. Cantidad de gastos por categoría (histórico)
+### 3. Dinero gastado por categoría (histórico)
 
-Gráfico de torta con la cantidad de gastos que acumuló cada categoría
-considerando **todo el histórico**, no un período. Es el único reporte de
-la sección que no depende de un rango de fechas. La porción más grande del
-gráfico es, por definición, la categoría con más gastos.
+Gráfico de torta con el `amount` acumulado (suma de dinero) por cada
+categoría, considerando **todo el histórico**, no un período. Junto con el
+de abajo, son los únicos reportes de la sección que no dependen de un rango
+de fechas. La porción más grande del gráfico es, por definición, la
+categoría en la que más plata se gastó.
 
-Cada `categoryId` distinto que haya tenido gastos alguna vez es su propia
-porción, exista o no la categoría hoy — no se agrupan todas las categorías
-borradas en una sola porción genérica:
+### 4. Cantidad de gastos por categoría (histórico)
+
+Gráfico de torta con la cantidad de gastos (`count`) que acumuló cada
+categoría, considerando **todo el histórico**, no un período. La porción
+más grande del gráfico es, por definición, la categoría con más gastos
+cargados (no necesariamente la misma que la de mayor dinero gastado del
+gráfico anterior).
+
+Ambos gráficos de torta (3 y 4) agrupan igual: cada `categoryId` distinto
+que haya tenido gastos alguna vez es su propia porción, exista o no la
+categoría hoy — no se agrupan todas las categorías borradas en una sola
+porción genérica:
 
 - Categoría que sigue existiendo: la porción muestra su nombre actual, sin
   indicador (no importa si fue renombrada, ya se muestra el nombre vigente).
@@ -197,7 +207,7 @@ borradas en una sola porción genérica:
   indicador "(categoría eliminada)" al lado, mismo criterio visual que en
   Gastos.
 
-### 4. Ranking de los 10 días con más gastos
+### 5. Ranking de los 10 días con más gastos
 
 Los 10 días con mayor cantidad de gastos, y por cada uno el detalle de los
 gastos de ese día: **descripción**, **monto** y **categoría** (nombre
@@ -214,13 +224,16 @@ actual de la categoría, vía `categoryId`).
 - En el detalle del ranking, la descripción es opcional en el modelo: si el
   gasto no tiene, se muestra el nombre de la categoría en su lugar (nunca un
   campo vacío).
-- El gráfico de torta de cantidad de gastos por categoría se calcula sobre
-  todos los gastos cargados, sin filtro de período, con una porción por
-  cada `categoryId` distinto que haya tenido gastos, exista o no la
-  categoría hoy.
+- Los dos gráficos de torta (dinero por categoría y cantidad de gastos por
+  categoría) se calculan sobre todos los gastos cargados, sin filtro de
+  período, con una porción por cada `categoryId` distinto que haya tenido
+  gastos, exista o no la categoría hoy.
 - Una porción de categoría borrada muestra su `categorySnapshot` con el
   indicador "(categoría eliminada)"; una porción de categoría viva muestra
-  su nombre actual, sin indicador.
+  su nombre actual, sin indicador. Mismo criterio en ambos gráficos.
+- La categoría con mayor porción en el gráfico de dinero no necesariamente
+  coincide con la de mayor porción en el gráfico de cantidad de gastos
+  (son dos distribuciones independientes sobre el mismo histórico).
 
 ## Fuera de alcance (v1)
 

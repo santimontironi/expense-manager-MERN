@@ -3,23 +3,10 @@ import type { z } from "zod"
 import { dayReportSchema } from "../../../../shared/schemas/report-schema"
 import Loader from "../ui/Loader"
 import { useLastWeek } from "../../hooks/reports/useLastWeek"
+import { currencyFormatter } from "../../utils/currency"
+import { shortDateFormatter, parseDateKey } from "../../utils/date"
 
 type DayReport = z.infer<typeof dayReportSchema>
-
-const currencyFormatter = new Intl.NumberFormat('es-AR', {
-  style: 'currency',
-  currency: 'ARS',
-})
-
-const dateFormatter = new Intl.DateTimeFormat('es-AR', {
-  day: '2-digit',
-  month: 'short',
-})
-
-const parseDateKey = (date: string) => {
-  const [year, month, day] = date.split('-').map(Number)
-  return new Date(year, month - 1, day)
-}
 
 const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: { payload: DayReport }[] }) => {
   if (!active || !payload?.length) return null
@@ -28,7 +15,7 @@ const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: { payl
 
   return (
     <div className="rounded-xl border border-ink/15 bg-primary px-4 py-3 shadow-[5px_5px_5px_rgba(0,0,0,0.15)]">
-      <p className="font-semibold text-ink">{dateFormatter.format(parseDateKey(date))}</p>
+      <p className="font-semibold text-ink">{shortDateFormatter.format(parseDateKey(date))}</p>
       <p className="mt-1 text-sm text-ink/70">{count === 1 ? '1 gasto' : `${count} gastos`}</p>
       <p className="text-sm font-semibold text-ink">{currencyFormatter.format(total)}</p>
     </div>
@@ -49,10 +36,16 @@ const LastWeek = () => {
       <div className="mt-4 h-64 md:h-80">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={days}>
+            <defs>
+              <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="var(--color-secondary)" />
+                <stop offset="100%" stopColor="var(--color-tertiary)" />
+              </linearGradient>
+            </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--color-ink)" strokeOpacity={0.1} vertical={false} />
             <XAxis
               dataKey="date"
-              tickFormatter={(date: string) => dateFormatter.format(parseDateKey(date))}
+              tickFormatter={(date: string) => shortDateFormatter.format(parseDateKey(date))}
               tick={{ fill: 'var(--color-ink)', fontSize: 12 }}
               axisLine={{ stroke: 'var(--color-ink)', strokeOpacity: 0.2 }}
               tickLine={false}
@@ -65,7 +58,7 @@ const LastWeek = () => {
               tickLine={false}
             />
             <Tooltip content={<CustomTooltip />} cursor={{ fill: 'var(--color-ink)', fillOpacity: 0.05 }} />
-            <Bar dataKey="total" fill="var(--color-secondary)" radius={[8, 8, 0, 0]} />
+            <Bar dataKey="total" fill="url(#barGradient)" radius={[8, 8, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </div>

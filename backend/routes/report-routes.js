@@ -5,3 +5,4 @@ import { verifyAuth } from '../middlewares/verify-auth.js';
 export const router = Router();
 
 router.get('/last-week', verifyAuth, reportController.getLastWeekReport);
+router.get('/category-limits', verifyAuth, reportController.getCategoryLimitStatus);
