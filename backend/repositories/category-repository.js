@@ -1,20 +1,24 @@
+import mongoose from 'mongoose';
 import { Category } from '../models/category-model.js';
 import { Expense } from '../models/expense-model.js';
 
 class CategoryRepository {
-    async findById(id) {
-        const category = await Category.findById(id);
+    async findById(id, userId) {
+        const category = await Category.findOne({ _id: id, userId });
         if (!category) return null;
 
-        const expenses = await Expense.find({ categoryId: id })
+        const expenses = await Expense.find({ categoryId: id, userId })
             .select('-categoryId')
             .sort({ createdAt: -1 }); //ese select quita el campo categoryId de los expenses, ya que no es necesario devolverlo en la respuesta
 
         return { category, expenses };
     }
 
-    async findAll() {
-        return await Category.aggregate([ //se extraen todas las categorías y se les agrega un campo con la cantidad de expenses asociados
+    async findAll(userId) {
+        return await Category.aggregate([ //se extraen todas las categorías del usuario y se les agrega un campo con la cantidad de expenses asociados
+            // aggregate() no castea tipos como sí hace Mongoose en find(), por
+            // eso hay que convertir el string a ObjectId a mano para que matchee.
+            { $match: { userId: new mongoose.Types.ObjectId(userId) } },
             {
                 $lookup: { //lookup es un join entre colecciones
                     from: 'expenses', // join contra la colección "expenses"
@@ -28,20 +32,20 @@ class CategoryRepository {
         ]);
     }
 
-    async createCategory(name, color, spendingLimit) {
-        return await Category.create({ name, color, spendingLimit });
+    async createCategory(userId, name, color, spendingLimit) {
+        return await Category.create({ userId, name, color, spendingLimit });
     }
 
-    async editCategory(id, name, color, spendingLimit) {
-        return await Category.findByIdAndUpdate(id, { name, color, spendingLimit }, { returnDocument: 'after' });
+    async editCategory(id, userId, name, color, spendingLimit) {
+        return await Category.findOneAndUpdate({ _id: id, userId }, { name, color, spendingLimit }, { returnDocument: 'after' });
     }
 
-    async findNameById(id) {
-        return await Category.findById(id).select('name');
+    async findNameById(id, userId) {
+        return await Category.findOne({ _id: id, userId }).select('name');
     }
 
-    async deleteCategory(id) {
-        return await Category.findByIdAndDelete(id)
+    async deleteCategory(id, userId) {
+        return await Category.findOneAndDelete({ _id: id, userId })
     }
 }
 

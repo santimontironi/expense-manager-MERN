@@ -12,6 +12,12 @@ ser cuestión de segundos, y a cambio la app responde preguntas concretas:
 cuánto se gastó este mes, en qué rubros se fue, cómo viene la semana y qué
 días fueron los más caros.
 
+## Cuenta de prueba
+
+| Usuario | Contraseña |
+|---|---|
+| `testUser` | `testUser12345` |
+
 ## Qué hace
 
 - **Gastos.** Monto, descripción opcional, método de pago (transferencia o
@@ -26,7 +32,48 @@ días fueron los más caros.
   mes anterior y evolución de los últimos días.
 - **Reportes.** Sección aparte del SideNav: la semana día por día, el volumen
   de gastos mes a mes, la categoría que más gastó en todo el histórico y el
-  ranking de los 10 días más caros con el detalle de cada gasto.
+  top 10 de los gastos más grandes.
+
+## Endpoints
+
+Todas las rutas (salvo `/login`) requieren sesión (cookie httpOnly con el
+JWT) y devuelven únicamente datos del usuario autenticado.
+
+**Auth** — `/api/auth`
+
+| Método | Ruta | Qué hace |
+|---|---|---|
+| `POST` | `/login` | Inicia sesión y setea la cookie de sesión |
+| `GET` | `/me` | Devuelve el usuario autenticado |
+| `POST` | `/logout` | Cierra la sesión |
+
+**Categorías** — `/api/categories`
+
+| Método | Ruta | Qué hace |
+|---|---|---|
+| `GET` | `/` | Lista las categorías del usuario |
+| `GET` | `/:id` | Detalle de una categoría |
+| `POST` | `/` | Crea una categoría |
+| `PATCH` | `/:id` | Edita una categoría |
+| `DELETE` | `/:id` | Borra una categoría |
+
+**Gastos** — `/api/expenses`
+
+| Método | Ruta | Qué hace |
+|---|---|---|
+| `GET` | `/` | Lista los gastos del usuario |
+| `POST` | `/` | Crea un gasto |
+| `DELETE` | `/:id` | Borra un gasto |
+
+**Reportes** — `/api/reports`
+
+| Método | Ruta | Qué hace |
+|---|---|---|
+| `GET` | `/last-week` | Gastos día por día de los últimos 7 días |
+| `GET` | `/monthly` | Volumen de gastos mes a mes (últimos 6 meses) |
+| `GET` | `/top-expenses` | Top 10 de los gastos más grandes |
+| `GET` | `/category-breakdown` | Total gastado y cantidad de gastos por categoría (histórico) |
+| `GET` | `/category-limits` | Estado del límite mensual de cada categoría |
 
 ## Stack
 
@@ -70,8 +117,9 @@ Variables de entorno del backend (`backend/.env`):
 | `FRONTEND_URL` | Origen permitido por CORS |
 | `NODE_ENV` | En `production` las cookies van `secure` + `sameSite: none` |
 
-El alta del único usuario se hace a mano contra `POST /api/auth/register`
-(Postman o similar): no hay registro público en la app.
+El alta de usuarios se hace a mano contra `POST /api/auth/register` (Postman
+o similar): no hay registro público en la app. Cada usuario ve únicamente sus
+propias categorías y gastos.
 
 ## Convenciones
 

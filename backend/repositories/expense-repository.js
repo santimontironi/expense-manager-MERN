@@ -1,21 +1,21 @@
 import {Expense} from "../models/expense-model.js";
 
 class ExpenseRepository {
-    async createExpense(expenseData, categorySnapshot) {
-        const expense = await Expense.create({ ...expenseData, categorySnapshot });
+    async createExpense(userId, expenseData, categorySnapshot) {
+        const expense = await Expense.create({ ...expenseData, userId, categorySnapshot });
         return await expense.populate('categoryId', 'name');
     }
 
-    async findAllExpenses() {
-        return await Expense.find().populate('categoryId', 'name').sort({ createdAt: -1 });
+    async findAllExpenses(userId) {
+        return await Expense.find({ userId }).populate('categoryId', 'name').sort({ createdAt: -1 });
     }
 
-    async findById(id) {
-        return await Expense.findById(id).populate('categoryId', 'name');
+    async findById(id, userId) {
+        return await Expense.findOne({ _id: id, userId }).populate('categoryId', 'name');
     }
 
-    async deleteExpense(id) {
-        return await Expense.findByIdAndDelete(id).populate('categoryId', 'name');
+    async deleteExpense(id, userId) {
+        return await Expense.findOneAndDelete({ _id: id, userId }).populate('categoryId', 'name');
     }
 
 }

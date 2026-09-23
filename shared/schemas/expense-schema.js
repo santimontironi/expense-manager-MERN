@@ -2,6 +2,7 @@ import {z} from "zod"
 
 export const expenseSchema = z.object({
     _id: z.string(),
+    userId: z.string(),
     amount: z.number().positive(),
     name: z.string(),
     description: z.string().max(100).optional(),

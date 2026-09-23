@@ -24,6 +24,19 @@ export const timeFormatter = new Intl.DateTimeFormat('es-AR', {
   minute: '2-digit',
 })
 
+// Mes corto con año: "sept 2026" (gráfico de gastos por mes).
+export const monthFormatter = new Intl.DateTimeFormat('es-AR', {
+  month: 'short',
+  year: 'numeric',
+})
+
+// Convierte una clave "YYYY-MM" (como la que devuelve el reporte mensual) en
+// un Date local en el primer día de ese mes. Mismo motivo que parseDateKey.
+export function parseMonthKey(monthKey: string) {
+  const [year, month] = monthKey.split('-').map(Number)
+  return new Date(year, month - 1, 1)
+}
+
 // Convierte una clave "YYYY-MM-DD" (como la que devuelven los reportes) en un
 // Date local a medianoche. new Date("YYYY-MM-DD") la interpretaría como UTC,
 // corriéndola un día para atrás en husos negativos (como Argentina) — por

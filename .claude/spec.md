@@ -184,9 +184,9 @@ no dentro de este gráfico.
 
 Gráfico de torta con el `amount` acumulado (suma de dinero) por cada
 categoría, considerando **todo el histórico**, no un período. Junto con el
-de abajo, son los únicos reportes de la sección que no dependen de un rango
-de fechas. La porción más grande del gráfico es, por definición, la
-categoría en la que más plata se gastó.
+de abajo y el top 10 de gastos, son los únicos reportes de la sección que no
+dependen de un rango de fechas. La porción más grande del gráfico es, por
+definición, la categoría en la que más plata se gastó.
 
 ### 4. Cantidad de gastos por categoría (histórico)
 
@@ -207,11 +207,15 @@ porción genérica:
   indicador "(categoría eliminada)" al lado, mismo criterio visual que en
   Gastos.
 
-### 5. Ranking de los 10 días con más gastos
+### 5. Top 10 de gastos más grandes
 
-Los 10 días con mayor cantidad de gastos, y por cada uno el detalle de los
-gastos de ese día: **descripción**, **monto** y **categoría** (nombre
-actual de la categoría, vía `categoryId`).
+Los 10 gastos individuales con mayor `amount` de todo el histórico,
+ordenados de mayor a menor. Por cada uno: **nombre**, **monto**, **fecha** y
+**categoría**. La categoría se muestra con su `categorySnapshot` y los mismos
+indicadores que en Gastos: "(categoría eliminada)" si ya no existe, o
+"(categoría editada, ahora {name actual})" si fue renombrada. Es la
+excepción a la regla de agrupar por nombre actual: acá no se agrupa por
+categoría, se lista cada gasto.
 
 ### Criterios de aceptación
 
@@ -220,10 +224,13 @@ actual de la categoría, vía `categoryId`).
 - El gráfico de barras de meses no incluye el mes actual (mes sin terminar);
   solo meses completos. La cantidad de gastos del mes en curso se expone
   aparte, en otra sección/campo de la respuesta de Reportes.
-- El ranking de días expone el detalle de cada gasto del día, no solo el total.
-- En el detalle del ranking, la descripción es opcional en el modelo: si el
-  gasto no tiene, se muestra el nombre de la categoría en su lugar (nunca un
-  campo vacío).
+- El top 10 se calcula sobre todos los gastos cargados, sin filtro de
+  período. Si hay menos de 10 gastos, se muestran los que haya. Ante un
+  empate de monto, va primero el más reciente.
+- En el top 10, la categoría de cada gasto muestra su `categorySnapshot`,
+  con "(categoría eliminada)" si el `categoryId` ya no existe, o "(categoría
+  editada, ahora {name actual})" si existe con otro nombre. Si el nombre
+  actual coincide con el `categorySnapshot`, no se muestra ningún indicador.
 - Los dos gráficos de torta (dinero por categoría y cantidad de gastos por
   categoría) se calculan sobre todos los gastos cargados, sin filtro de
   período, con una porción por cada `categoryId` distinto que haya tenido

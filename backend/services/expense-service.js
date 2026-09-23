@@ -2,31 +2,31 @@ import expenseRepository from "../repositories/expense-repository.js"
 import categoryRepository from "../repositories/category-repository.js"
 
 class ExpenseService {
-    async createExpense(expenseData) {
-        const category = await categoryRepository.findNameById(expenseData.categoryId)
+    async createExpense(userId, expenseData) {
+        const category = await categoryRepository.findNameById(expenseData.categoryId, userId)
         if (!category) {
             const error = new Error('Categoría no encontrada')
             error.status = 404
             throw error
         }
 
-        return await expenseRepository.createExpense(expenseData, category.name)
+        return await expenseRepository.createExpense(userId, expenseData, category.name)
     }
 
-    async getAllExpenses() {
-        return await expenseRepository.findAllExpenses()
+    async getAllExpenses(userId) {
+        return await expenseRepository.findAllExpenses(userId)
     }
 
-    async deleteExpense(id) {
+    async deleteExpense(id, userId) {
 
-        const expense = await expenseRepository.findById(id)
+        const expense = await expenseRepository.findById(id, userId)
         if (!expense) {
             const error = new Error('Gasto no encontrado')
             error.status = 404
             throw error
         }
 
-        return await expenseRepository.deleteExpense(id)
+        return await expenseRepository.deleteExpense(id, userId)
     }
 }
 

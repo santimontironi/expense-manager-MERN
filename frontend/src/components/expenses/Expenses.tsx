@@ -1,6 +1,7 @@
 import Swal from "sweetalert2"
 import "sweetalert2/dist/sweetalert2.min.css"
 import Loader from "../ui/Loader"
+import EmptyState from "../ui/EmptyState"
 import { useGetExpenses } from "../../hooks/expenses/useGetExpenses"
 import { useDeleteExpense } from "../../hooks/expenses/useDeleteExpense"
 import ExpenseCard from "./ExpenseCard"
@@ -65,9 +66,9 @@ const Expenses = () => {
 
       {modalOpen && <AddExpenseModal onClose={() => setModalOpen(false)} />}
 
-      <header className="flex flex-col gap-4 border-l-4 border-secondary pl-4 md:flex-row md:items-end md:justify-between md:gap-6 md:pl-6">
-        <div>
-          <h2 className="text-3xl font-semibold text-ink xl:text-4xl">Gastos</h2>
+      <header className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-6">
+        <div className="border-l-4 border-secondary pl-4 md:pl-6">
+          <h2 className="text-4xl font-bold text-ink [text-shadow:0_2px_6px_rgba(43,16,32,0.28)] md:text-5xl xl:text-6xl">Gastos</h2>
           <p className="mt-2 max-w-[38ch] leading-relaxed text-ink/70">
             {expenses.length === 1
               ? '1 gasto registrado.'
@@ -117,13 +118,11 @@ const Expenses = () => {
       </header>
 
       {expenses.length === 0 ? (
-        <div className="mt-10 rounded-3xl border border-dashed border-ink/25 px-6 py-14 text-center md:py-20">
-          <i className="bi bi-receipt text-4xl text-ink/40 md:text-5xl"></i>
-          <h3 className="mt-4 text-xl font-semibold text-ink">Todavía no hay gastos</h3>
-          <p className="mx-auto mt-2 max-w-[38ch] leading-relaxed text-ink/70">
-            Registrá tu primer gasto para empezar a ver en qué se te va la plata.
-          </p>
-        </div>
+        <EmptyState
+          icon="bi-receipt"
+          title="Todavía no hay gastos"
+          description="Registrá tu primer gasto para empezar a ver en qué se te va la plata."
+        />
       ) : (
         <ul className="mt-6 flex flex-col gap-3 md:mt-10 md:gap-4">
           {sortedExpenses.map((expense) => (

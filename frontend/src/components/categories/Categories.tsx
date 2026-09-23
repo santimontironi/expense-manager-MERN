@@ -2,6 +2,7 @@ import { useGetCategories } from '../../hooks/categories/useGetCategories'
 import { useState } from 'react'
 import AddCategoryModal from './AddCategoryModal'
 import Loader from '../ui/Loader'
+import EmptyState from '../ui/EmptyState'
 import CategoryCard from './CategoryCard'
 import CategoryDetail from './CategoryDetail'
 
@@ -24,9 +25,9 @@ const Categories = () => {
 
       {modalOpen && <AddCategoryModal onClose={() => setModalOpen(false)} />}
 
-      <header className="flex flex-col gap-4 border-l-4 border-secondary pl-4 md:flex-row md:items-end md:justify-between md:gap-6 md:pl-6">
-        <div>
-          <h2 className="text-3xl font-semibold text-ink xl:text-4xl">Categorías</h2>
+      <header className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-6">
+        <div className="border-l-4 border-secondary pl-4 md:pl-6">
+          <h2 className="text-4xl font-bold text-ink [text-shadow:0_2px_6px_rgba(43,16,32,0.28)] md:text-5xl xl:text-6xl">Categorías</h2>
           <p className="mt-2 max-w-[38ch] leading-relaxed text-ink/70">
             {categories.length === 1
               ? '1 rubro para clasificar tus gastos.'
@@ -45,13 +46,11 @@ const Categories = () => {
       </header>
 
       {categories.length === 0 ? (
-        <div className="mt-10 rounded-3xl border border-dashed border-ink/25 px-6 py-14 text-center md:py-20">
-          <i className="bi bi-tags text-4xl text-ink/40 md:text-5xl"></i>
-          <h3 className="mt-4 text-xl font-semibold text-ink">Todavía no hay categorías</h3>
-          <p className="mx-auto mt-2 max-w-[38ch] leading-relaxed text-ink/70">
-            Creá tu primer rubro para empezar a ordenar en qué se te va la plata.
-          </p>
-        </div>
+        <EmptyState
+          icon="bi-tags"
+          title="Todavía no hay categorías"
+          description="Creá tu primer rubro para empezar a ordenar en qué se te va la plata."
+        />
       ) : (
         <ul className="mt-6 grid gap-3 md:mt-10 md:grid-cols-1 md:gap-5 xl:grid-cols-2 2xl:grid-cols-3">
           {categories.map((category) => (
