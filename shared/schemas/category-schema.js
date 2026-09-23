@@ -3,6 +3,7 @@ import { expenseSchema } from "./expense-schema.js"
 
 export const categorySchema = z.object({
     _id: z.string(),
+    userId: z.string(),
     name: z.string(),
     color: z.string(),
     spendingLimit: z.number().positive(),

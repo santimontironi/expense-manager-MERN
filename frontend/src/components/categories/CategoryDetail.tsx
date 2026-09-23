@@ -2,6 +2,7 @@ import Swal from "sweetalert2"
 import "sweetalert2/dist/sweetalert2.min.css"
 import ExpenseCard from "../expenses/ExpenseCard"
 import Loader from "../ui/Loader"
+import EmptyState from "../ui/EmptyState"
 import { useGetCategoryById } from "../../hooks/categories/useGetCategoryById"
 import { useDeleteExpense } from "../../hooks/expenses/useDeleteExpense"
 import { currencyFormatter } from "../../utils/currency"
@@ -81,13 +82,11 @@ const CategoryDetail = ({ categoryId, onBack }: { categoryId: string; onBack: ()
       </header>
 
       {expenses.length === 0 ? (
-        <div className="mt-10 rounded-3xl border border-dashed border-ink/25 px-6 py-14 text-center md:py-20">
-          <i className="bi bi-receipt text-4xl text-ink/40 md:text-5xl"></i>
-          <h3 className="mt-4 text-xl font-semibold text-ink">Todavía no hay gastos en esta categoría</h3>
-          <p className="mx-auto mt-2 max-w-[38ch] leading-relaxed text-ink/70">
-            Los gastos que cargues con este rubro van a aparecer acá.
-          </p>
-        </div>
+        <EmptyState
+          icon="bi-receipt"
+          title="Todavía no hay gastos en esta categoría"
+          description="Los gastos que cargues con este rubro van a aparecer acá."
+        />
       ) : (
         <ul className="mt-8 flex flex-col gap-3 md:mt-10 md:gap-4">
           {expenses.map((expense) => (

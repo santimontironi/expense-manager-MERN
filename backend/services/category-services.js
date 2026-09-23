@@ -2,14 +2,14 @@ import categoryRepository from '../repositories/category-repository.js';
 
 class CategoryService {
 
-    async getAllCategories() {
-        const categories = await categoryRepository.findAll();
+    async getAllCategories(userId) {
+        const categories = await categoryRepository.findAll(userId);
 
         return categories;
     }
 
-    async getCategoryById(id) {
-        const result = await categoryRepository.findById(id);
+    async getCategoryById(id, userId) {
+        const result = await categoryRepository.findById(id, userId);
         if (!result) {
             const error = new Error('Categoría no encontrada');
             error.status = 404;
@@ -19,24 +19,24 @@ class CategoryService {
         return result;
     }
 
-    async createCategory(name, color, spendingLimit) {
-        const newCategory = await categoryRepository.createCategory(name, color, spendingLimit);
+    async createCategory(userId, name, color, spendingLimit) {
+        const newCategory = await categoryRepository.createCategory(userId, name, color, spendingLimit);
         return newCategory;
     }
 
-    async editCategory(id, name, color, spendingLimit) {
-        const category = await categoryRepository.findById(id);
+    async editCategory(id, userId, name, color, spendingLimit) {
+        const category = await categoryRepository.findById(id, userId);
         if (!category) {
             const error = new Error('Categoría no encontrada');
             error.status = 404;
             throw error;
         }
 
-        return await categoryRepository.editCategory(id, name, color, spendingLimit);
+        return await categoryRepository.editCategory(id, userId, name, color, spendingLimit);
     }
 
-    async deleteCategory(id){
-        const categoryNotFounded = await categoryRepository.findById(id)
+    async deleteCategory(id, userId){
+        const categoryNotFounded = await categoryRepository.findById(id, userId)
 
         if(!categoryNotFounded){
             const error = new Error('Categoría no encontrada');
@@ -44,7 +44,7 @@ class CategoryService {
             throw error;
         }
 
-        const categoryDeleted = await categoryRepository.deleteCategory(id)
+        const categoryDeleted = await categoryRepository.deleteCategory(id, userId)
 
         return categoryDeleted
     }
