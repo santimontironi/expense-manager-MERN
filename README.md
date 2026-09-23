@@ -37,7 +37,8 @@ días fueron los más caros.
 ## Endpoints
 
 Todas las rutas (salvo `/login`) requieren sesión (cookie httpOnly con el
-JWT) y devuelven únicamente datos del usuario autenticado.
+JWT) y devuelven únicamente datos del usuario autenticado. Toda ruta con
+`:id` valida antes que sea un ObjectId de Mongo válido (`400` si no lo es).
 
 **Auth** — `/api/auth`
 

@@ -13,6 +13,11 @@ separada).
 - Login con `username` + `password`. Sesión vía cookie (ya hay
   `verify-auth` middleware y `cookie-parser` instalados).
 - Todas las rutas de categorías y gastos requieren sesión activa.
+- Toda ruta con un `:id` en el path (`GET/PATCH/DELETE /api/categories/:id`,
+  `DELETE /api/expenses/:id`) valida primero que sea un ObjectId de Mongo
+  válido (`verify-object-id` middleware) antes de llegar al controller. Un
+  `id` con formato inválido devuelve `400`, no `404` ni un error de Mongoose
+  sin manejar.
 
 ## Categorías
 
