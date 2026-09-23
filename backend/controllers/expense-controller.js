@@ -28,6 +28,17 @@ class ExpenseController {
             res.status(error.status || 500).json({ error: error.message });
         }
     }
+
+    async reassignCategory(req, res) {
+        try {
+            const { id } = req.params;
+            const { categoryId } = req.body;
+            const expense = await expenseService.reassignCategory(id, req.user.id, categoryId);
+            res.status(200).json(expense);
+        } catch (error) {
+            res.status(error.status || 500).json({ error: error.message });
+        }
+    }
 }
 
 const expenseController = new ExpenseController();

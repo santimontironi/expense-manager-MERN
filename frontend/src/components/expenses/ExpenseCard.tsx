@@ -1,8 +1,25 @@
 import type { Expense } from '../../types/expense.types'
+import type { Category } from '../../types/category.types'
 import { currencyFormatter } from '../../utils/currency'
 import { shortDateFormatter, timeFormatter } from '../../utils/date'
 
-const ExpenseCard = ({ expense, onDelete, isDeleting, showCategory = true }: { expense: Expense; onDelete: () => void; isDeleting?: boolean; showCategory?: boolean }) => {
+const ExpenseCard = ({
+  expense,
+  onDelete,
+  isDeleting,
+  showCategory = true,
+  otherCategories,
+  onChangeCategory,
+  isChangingCategory,
+}: {
+  expense: Expense
+  onDelete: () => void
+  isDeleting?: boolean
+  showCategory?: boolean
+  otherCategories?: Category[]
+  onChangeCategory?: (categoryId: string) => void
+  isChangingCategory?: boolean
+}) => {
 
   const isTransfer = expense.paymentMethod === 'transfer'
   const categoryDeleted = !expense.categoryId
@@ -55,6 +72,35 @@ const ExpenseCard = ({ expense, onDelete, isDeleting, showCategory = true }: { e
           </p>
         </div>
       </div>
+
+      {otherCategories && onChangeCategory && (
+        <div className="relative shrink-0">
+          <i
+            aria-hidden="true"
+            className={`bi ${isChangingCategory ? 'bi-arrow-repeat animate-spin' : 'bi-arrow-left-right'} pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-sm text-secondary`}
+          ></i>
+          <select
+            aria-label={`Mover gasto ${expense.name} a otra categoría`}
+            defaultValue=""
+            disabled={isChangingCategory}
+            onChange={(e) => {
+              if (e.target.value) onChangeCategory(e.target.value)
+            }}
+            className="appearance-none cursor-pointer rounded-xl border-2 border-secondary bg-primary py-2.5 pr-8 pl-9 text-xs font-semibold text-ink outline-none transition-colors hover:bg-secondary/5 focus-visible:ring-2 focus-visible:ring-secondary/20 disabled:cursor-not-allowed disabled:opacity-50 md:py-3 md:text-sm"
+          >
+            <option value="" disabled>Cambiar categoría</option>
+            {otherCategories.map((category) => (
+              <option key={category._id} value={category._id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+          <i
+            aria-hidden="true"
+            className="bi bi-chevron-down pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-[10px] text-ink/50"
+          ></i>
+        </div>
+      )}
 
       <button
         type="button"

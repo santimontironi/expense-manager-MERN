@@ -4,19 +4,24 @@ import ExpenseCard from "../expenses/ExpenseCard"
 import Loader from "../ui/Loader"
 import EmptyState from "../ui/EmptyState"
 import { useGetCategoryById } from "../../hooks/categories/useGetCategoryById"
+import { useGetCategories } from "../../hooks/categories/useGetCategories"
 import { useDeleteExpense } from "../../hooks/expenses/useDeleteExpense"
+import { useChangeExpenseCategory } from "../../hooks/expenses/useChangeExpenseCategory"
 import { currencyFormatter } from "../../utils/currency"
 import { dateFormatter } from "../../utils/date"
 
 const CategoryDetail = ({ categoryId, onBack }: { categoryId: string; onBack: () => void }) => {
   const { data: categoryDetail, isLoading } = useGetCategoryById(categoryId)
+  const { data: categories } = useGetCategories()
   const { mutate: deleteExpense, isPending: isDeleting } = useDeleteExpense()
+  const { mutate: changeExpenseCategory, isPending: isChangingCategory } = useChangeExpenseCategory()
 
   if (isLoading || !categoryDetail) {
     return <Loader />
   }
 
   const { category, expenses } = categoryDetail
+  const otherCategories = categories?.filter((c) => c._id !== category._id)
 
   const handleDelete = async (id: string, name: string) => {
     const result = await Swal.fire({
@@ -96,6 +101,9 @@ const CategoryDetail = ({ categoryId, onBack }: { categoryId: string; onBack: ()
                 onDelete={() => handleDelete(expense._id, expense.name)}
                 isDeleting={isDeleting}
                 showCategory={false}
+                otherCategories={otherCategories}
+                onChangeCategory={(newCategoryId) => changeExpenseCategory({ id: expense._id, categoryId: newCategoryId })}
+                isChangingCategory={isChangingCategory}
               />
             </li>
           ))}

@@ -16,3 +16,8 @@ export const deleteExpenseService = async (id: string) => {
     const response = await api.delete(`/expenses/${id}`)
     return expenseSchema.parse(response.data)
 }
+
+export const changeExpenseCategoryService = async ({ id, categoryId }: { id: string; categoryId: string }) => {
+    const response = await api.patch(`/expenses/${id}/category`, { categoryId })
+    return expenseSchema.parse(response.data)
+}
