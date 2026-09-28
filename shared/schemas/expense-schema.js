@@ -23,3 +23,7 @@ export const createExpenseSchema = z.object({
     paymentMethod: z.enum(['transfer', 'cash'], { error: "Elegí un método de pago" }),
     categoryId: z.string().min(1, { message: "La categoría es requerida" }),
 })
+
+export const changeExpenseCategorySchema = z.object({
+    categoryId: z.string().min(1, { message: "La categoría es requerida" }),
+})

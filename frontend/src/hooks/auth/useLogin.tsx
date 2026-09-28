@@ -6,8 +6,8 @@ export const useLogin = () => {
 
   return useMutation({
     mutationFn: loginService,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["me"] });
+    onSuccess: (data) => {
+      queryClient.setQueryData(["me"], data);
     },
   });
 };

@@ -28,6 +28,24 @@ class ExpenseService {
 
         return await expenseRepository.deleteExpense(id, userId)
     }
+
+    async reassignCategory(id, userId, categoryId) {
+        const expense = await expenseRepository.findById(id, userId)
+        if (!expense) {
+            const error = new Error('Gasto no encontrado')
+            error.status = 404
+            throw error
+        }
+
+        const category = await categoryRepository.findNameById(categoryId, userId)
+        if (!category) {
+            const error = new Error('Categoría no encontrada')
+            error.status = 404
+            throw error
+        }
+
+        return await expenseRepository.updateCategory(id, userId, categoryId)
+    }
 }
 
 const expenseService = new ExpenseService()
