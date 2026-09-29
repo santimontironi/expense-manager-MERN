@@ -3,6 +3,20 @@ import bcrypt from 'bcrypt';
 import authRepository from '../repositories/auth-repository.js';
 
 class AuthServices {
+    async register(username, password) {
+        const existingUser = await authRepository.findUserByUsername(username);
+        if (existingUser) {
+            const error = new Error('El nombre de usuario ya está en uso');
+            error.status = 409;
+            throw error;
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = await authRepository.createUser(username, hashedPassword);
+
+        return { id: user._id, username: user.username };
+    }
+
     async login(username, password) {
         const user = await authRepository.findUserByUsername(username);
         if (!user) {

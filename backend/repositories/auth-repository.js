@@ -5,6 +5,10 @@ class AuthRepository {
         return await User.findOne({ username });
     }
 
+    async createUser(username, password) {
+        return await User.create({ username, password });
+    }
+
     async findUserById(id) {
         return await User.findById(id).select('-password');
     }
