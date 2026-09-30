@@ -118,8 +118,8 @@ Variables de entorno del backend (`backend/.env`):
 | `FRONTEND_URL` | Origen permitido por CORS |
 | `NODE_ENV` | En `production` las cookies van `secure` + `sameSite: none` |
 
-El alta de usuarios se hace a mano contra `POST /api/auth/register` (Postman
-o similar): no hay registro público en la app. Cada usuario ve únicamente sus
+No hay endpoint de registro: los usuarios se dan de alta directamente en la
+base de datos (con la contraseña hasheada con bcrypt). Cada usuario ve únicamente sus
 propias categorías y gastos.
 
 ## Convenciones

@@ -8,8 +8,9 @@ separada).
 
 ## Autenticación
 
-- Existe `POST /api/auth/register`, pero no está expuesto en el frontend: se
-  usa manualmente (Postman) para dar de alta al único usuario de la app.
+- No hay endpoint de registro: los usuarios (la usuaria real y la cuenta demo
+  del portfolio) se crean directamente en la base con la contraseña hasheada
+  con bcrypt.
 - Login con `username` + `password`. Sesión vía cookie (ya hay
   `verify-auth` middleware y `cookie-parser` instalados).
 - Todas las rutas de categorías y gastos requieren sesión activa.
