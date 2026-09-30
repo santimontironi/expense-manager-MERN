@@ -2,11 +2,10 @@ import { Router } from 'express';
 import authController from '../controllers/auth-controller.js';
 import { validateBody } from '../middlewares/zod-validation.js';
 import { verifyAuth } from '../middlewares/verify-auth.js';
-import { loginSchema, registerSchema } from 'shared/schemas/auth-schema.js';
+import { loginSchema } from 'shared/schemas/auth-schema.js';
 
 export const router = Router();
 
-router.post('/register', validateBody(registerSchema), authController.register);
 router.post('/login', validateBody(loginSchema), authController.login);
 router.get('/me', verifyAuth, authController.me);
 router.post('/logout', verifyAuth, authController.logout);
