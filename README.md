@@ -1,6 +1,6 @@
 # MiBolsillo
 
-> 🚧 En desarrollo.
+En producción: https://expense-manager-mern-zeta.vercel.app/
 
 App personal para registrar gastos cotidianos y entender en qué se va la
 plata. Hecha para mi novia: es un registro individual, privado y de uso
