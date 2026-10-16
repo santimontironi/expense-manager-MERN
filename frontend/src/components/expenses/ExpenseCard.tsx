@@ -1,7 +1,7 @@
 import type { Expense } from '../../types/expense.types'
 import type { Category } from '../../types/category.types'
 import { currencyFormatter } from '../../utils/currency'
-import { shortDateFormatter, timeFormatter } from '../../utils/date'
+import { shortDateFormatter } from '../../utils/date'
 
 const ExpenseCard = ({
   expense,
@@ -55,8 +55,7 @@ const ExpenseCard = ({
       </div>
 
       <div className="hidden shrink-0 flex-col items-end gap-0.5 text-sm font-normal text-ink/80 md:flex">
-        <p> <span className='font-bold'>Fecha:</span> {shortDateFormatter.format(new Date(expense.createdAt))}</p>
-        <p> <span className='font-bold'>Hora:</span> {timeFormatter.format(new Date(expense.createdAt))}</p>
+        <p> <span className='font-bold'>Fecha:</span> {shortDateFormatter.format(new Date(expense.date))}</p>
       </div>
 
       <div className="order-last flex w-full items-center justify-between border-t border-dashed border-ink/20 pt-3 md:w-auto md:min-w-36 md:shrink-0 md:flex-col md:justify-center md:self-stretch md:border-t-0 md:border-l md:border-ink/30 md:pt-0 md:pl-4 md:text-right">
@@ -65,10 +64,7 @@ const ExpenseCard = ({
         </p>
         <div className="flex flex-col gap-0.5 text-right md:hidden">
           <p className="text-xs font-normal text-ink/60">
-            <span className='font-bold'>Fecha:</span> {shortDateFormatter.format(new Date(expense.createdAt))}
-          </p>
-          <p className="text-xs font-normal text-ink/60">
-            <span className='font-bold'>Hora:</span> {timeFormatter.format(new Date(expense.createdAt))}
+            <span className='font-bold'>Fecha:</span> {shortDateFormatter.format(new Date(expense.date))}
           </p>
         </div>
       </div>

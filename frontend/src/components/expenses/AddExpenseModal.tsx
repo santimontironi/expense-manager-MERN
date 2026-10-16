@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { CreateExpenseCredentials } from "../../types/expense.types"
 import { createExpenseSchema } from "../../../../shared/schemas/expense-schema.js"
+import { parseDateKey } from "../../utils/date"
 
 interface AddExpenseModalProps {
     onClose: () => void
@@ -14,12 +15,15 @@ const AddExpenseModal = ({ onClose }: AddExpenseModalProps) => {
     const { mutate: addExpense, isPending } = useAddExpense()
     const { data: categories } = useGetCategories()
 
+    const today = new Date().toLocaleDateString('en-CA')
+
     const { register, handleSubmit, formState: { errors } } = useForm<CreateExpenseCredentials>({
-        resolver: zodResolver(createExpenseSchema)
+        resolver: zodResolver(createExpenseSchema),
+        defaultValues: { date: today },
     })
 
     const submitForm = (data: CreateExpenseCredentials) => {
-        addExpense(data, { onSuccess: onClose })
+        addExpense({ ...data, date: parseDateKey(data.date).toISOString() }, { onSuccess: onClose })
     }
 
     return (
@@ -29,7 +33,7 @@ const AddExpenseModal = ({ onClose }: AddExpenseModalProps) => {
         >
             <div
                 onClick={(e) => e.stopPropagation()}
-                className="relative w-full max-w-md rounded-3xl bg-primary p-8 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.3),0_45px_80px_-20px_rgba(0,0,0,0.55)] md:p-10"
+                className="relative w-full max-w-md rounded-3xl bg-primary p-8 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.3),0_45px_80px_-20px_rgba(0,0,0,0.55)] md:max-w-3xl md:p-10"
             >
                 <button
                     type="button"
@@ -47,7 +51,7 @@ const AddExpenseModal = ({ onClose }: AddExpenseModalProps) => {
                     Registrá en qué gastaste y cuánto.
                 </p>
 
-                <form className="mt-7 flex flex-col gap-5" onSubmit={handleSubmit(submitForm)}>
+                <form className="mt-7 grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-x-6" onSubmit={handleSubmit(submitForm)}>
                     <div className="flex flex-col gap-2">
                         <label htmlFor="name" className="text-sm font-normal text-ink/70">
                             Nombre
@@ -89,47 +93,6 @@ const AddExpenseModal = ({ onClose }: AddExpenseModalProps) => {
                     </div>
 
                     <div className="flex flex-col gap-2">
-                        <label htmlFor="description" className="text-sm font-normal text-ink/70">
-                            Descripción <span className="text-ink/50">(opcional)</span>
-                        </label>
-                        <div className="flex items-center gap-3 rounded-xl border border-ink/15 px-4 py-3 transition-colors focus-within:border-secondary focus-within:ring-2 focus-within:ring-secondary/20">
-                            <i className="bi bi-card-text text-ink/40"></i>
-                            <input
-                                id="description"
-                                type="text"
-                                placeholder="Detalle opcional del gasto"
-                                className="w-full bg-transparent text-sm font-normal text-ink outline-none placeholder:text-ink/60"
-                                {...register("description")}
-                            />
-                        </div>
-                        {errors.description && (
-                            <span className="text-sm text-red-600">{errors.description.message}</span>
-                        )}
-                    </div>
-
-                    <div className="flex flex-col gap-2">
-                        <label htmlFor="paymentMethod" className="text-sm font-normal text-ink/70">
-                            Método de pago
-                        </label>
-                        <div className="flex items-center gap-3 rounded-xl border border-ink/15 px-4 py-3 transition-colors focus-within:border-secondary focus-within:ring-2 focus-within:ring-secondary/20">
-                            <i className="bi bi-credit-card text-ink/40"></i>
-                            <select
-                                id="paymentMethod"
-                                defaultValue=""
-                                className="w-full bg-transparent text-sm font-normal text-ink outline-none"
-                                {...register("paymentMethod", { required: "Elegí un método de pago" })}
-                            >
-                                <option value="" disabled>Seleccioná un método</option>
-                                <option value="transfer">Transferencia</option>
-                                <option value="cash">Efectivo</option>
-                            </select>
-                        </div>
-                        {errors.paymentMethod && (
-                            <span className="text-sm text-red-600">{errors.paymentMethod.message}</span>
-                        )}
-                    </div>
-
-                    <div className="flex flex-col gap-2">
                         <label htmlFor="categoryId" className="text-sm font-normal text-ink/70">
                             Categoría
                         </label>
@@ -157,10 +120,70 @@ const AddExpenseModal = ({ onClose }: AddExpenseModalProps) => {
                         )}
                     </div>
 
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="paymentMethod" className="text-sm font-normal text-ink/70">
+                            Método de pago
+                        </label>
+                        <div className="flex items-center gap-3 rounded-xl border border-ink/15 px-4 py-3 transition-colors focus-within:border-secondary focus-within:ring-2 focus-within:ring-secondary/20">
+                            <i className="bi bi-credit-card text-ink/40"></i>
+                            <select
+                                id="paymentMethod"
+                                defaultValue=""
+                                className="w-full bg-transparent text-sm font-normal text-ink outline-none"
+                                {...register("paymentMethod", { required: "Elegí un método de pago" })}
+                            >
+                                <option value="" disabled>Seleccioná un método</option>
+                                <option value="transfer">Transferencia</option>
+                                <option value="cash">Efectivo</option>
+                            </select>
+                        </div>
+                        {errors.paymentMethod && (
+                            <span className="text-sm text-red-600">{errors.paymentMethod.message}</span>
+                        )}
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="date" className="text-sm font-normal text-ink/70">
+                            Fecha
+                        </label>
+                        <div className="flex items-center gap-3 rounded-xl border border-ink/15 px-4 py-3 transition-colors focus-within:border-secondary focus-within:ring-2 focus-within:ring-secondary/20">
+                            <i className="bi bi-calendar-event text-ink/40"></i>
+                            <input
+                                id="date"
+                                type="date"
+                                max={today}
+                                className="w-full bg-transparent text-sm font-normal text-ink outline-none"
+                                {...register("date")}
+                            />
+                        </div>
+                        {errors.date && (
+                            <span className="text-sm text-red-600">{errors.date.message}</span>
+                        )}
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="description" className="text-sm font-normal text-ink/70">
+                            Descripción <span className="text-ink/50">(opcional)</span>
+                        </label>
+                        <div className="flex items-center gap-3 rounded-xl border border-ink/15 px-4 py-3 transition-colors focus-within:border-secondary focus-within:ring-2 focus-within:ring-secondary/20">
+                            <i className="bi bi-card-text text-ink/40"></i>
+                            <input
+                                id="description"
+                                type="text"
+                                placeholder="Detalle opcional del gasto"
+                                className="w-full bg-transparent text-sm font-normal text-ink outline-none placeholder:text-ink/60"
+                                {...register("description")}
+                            />
+                        </div>
+                        {errors.description && (
+                            <span className="text-sm text-red-600">{errors.description.message}</span>
+                        )}
+                    </div>
+
                     <button
                         type="submit"
                         disabled={isPending}
-                        className="mt-1 cursor-pointer rounded-xl bg-quaternary py-3.5 font-semibold text-ink transition-colors hover:bg-tertiary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/40 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+                        className="mt-1 cursor-pointer rounded-xl bg-quaternary py-3.5 font-semibold text-ink transition-colors hover:bg-tertiary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/40 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 md:col-span-2"
                     >
                         {isPending ? "Creando..." : "Crear gasto"}
                     </button>
