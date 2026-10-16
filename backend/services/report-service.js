@@ -18,7 +18,7 @@ class ReportService {
         // Retrocede 6 días desde hoy → "fromDate" queda en el primer día del rango de 7 (hoy inclusive).
         fromDate.setDate(fromDate.getDate() - (DAYS_IN_WEEK_REPORT - 1))
 
-        // Trae de la base todos los gastos con createdAt >= fromDate.
+        // Trae de la base todos los gastos con date >= fromDate.
         const expenses = await reportRepository.findExpensesSince(userId, fromDate)
 
         // Acá se va a armar la lista de los 7 días, cada uno arrancando en 0.
@@ -40,7 +40,7 @@ class ReportService {
         for (const expense of expenses) {
 
             // Se saca el "YYYY-MM-DD" (en hora local) de ese gasto, para poder matchearlo con el day.date correspondiente.
-            const key = toLocalDateKey(expense.createdAt)
+            const key = toLocalDateKey(expense.date)
 
             // Busca en "days" el objeto del día que tenga esa misma fecha.
             const day = days.find(d => d.date === key)
@@ -86,7 +86,7 @@ class ReportService {
         }
 
         for (const expense of expenses) {
-            const key = toLocalMonthKey(expense.createdAt)
+            const key = toLocalMonthKey(expense.date)
             const month = months.find(m => m.month === key)
             if (month) {
                 month.count += 1
@@ -111,7 +111,7 @@ class ReportService {
             id: expense._id,
             name: expense.name,
             amount: expense.amount,
-            date: toLocalDateKey(expense.createdAt),
+            date: toLocalDateKey(expense.date),
             category: expense.categorySnapshot,
             // null when the category was deleted.
             currentCategory: categoryNameById.get(expense.categoryId.toString()) ?? null, //se busca el nombre de la categoria actual en el diccionario

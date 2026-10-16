@@ -3,15 +3,15 @@ import { Expense } from "../models/expense-model.js";
 
 class ReportRepository {
     async findExpensesSince(userId, fromDate) {
-        return await Expense.find({ userId, createdAt: { $gte: fromDate } });
+        return await Expense.find({ userId, date: { $gte: fromDate } });
     }
 
     async findExpensesInRange(userId, fromDate, toDate) {
-        return await Expense.find({ userId, createdAt: { $gte: fromDate, $lt: toDate } }); //lt es menor que
+        return await Expense.find({ userId, date: { $gte: fromDate, $lt: toDate } }); //lt es menor que
     }
 
     async findTopExpenses(userId) {
-        return await Expense.find({ userId }).sort({ amount: -1, createdAt: -1 }).limit(10);
+        return await Expense.find({ userId }).sort({ amount: -1, date: -1 }).limit(10);
     }
 
     async sumAndCountExpensesByCategory(userId) {
@@ -38,10 +38,10 @@ class ReportRepository {
         return await Expense.aggregate([
 
             // $match filtra documentos, como un WHERE en SQL. Acá se queda
-            // solo con los gastos del usuario cuyo createdAt sea >= fromDate.
+            // solo con los gastos del usuario cuyo date sea >= fromDate.
             // $gte significa "mayor o igual que". aggregate() no castea tipos
             // como find(), por eso hay que convertir el userId a ObjectId a mano.
-            { $match: { userId: new mongoose.Types.ObjectId(userId), createdAt: { $gte: fromDate } } },
+            { $match: { userId: new mongoose.Types.ObjectId(userId), date: { $gte: fromDate } } },
 
             // $group junta los documentos que quedaron en baldes según el
             // valor de "_id" (acá, categoryId: un balde por cada categoría

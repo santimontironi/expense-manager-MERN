@@ -7,7 +7,7 @@ class ExpenseRepository {
     }
 
     async findAllExpenses(userId) {
-        return await Expense.find({ userId }).populate('categoryId', 'name').sort({ createdAt: -1 });
+        return await Expense.find({ userId }).populate('categoryId', 'name').sort({ date: -1, createdAt: -1 });
     }
 
     async findById(id, userId) {

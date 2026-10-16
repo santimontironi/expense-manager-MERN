@@ -12,6 +12,7 @@ export const expenseSchema = z.object({
         name: z.string(),
     }).nullable(),
     categorySnapshot: z.string(),
+    date: z.string(),
     createdAt: z.string(),
     updatedAt: z.string(),
 })
@@ -22,6 +23,7 @@ export const createExpenseSchema = z.object({
     description: z.string().max(100).optional(),
     paymentMethod: z.enum(['transfer', 'cash'], { error: "Elegí un método de pago" }),
     categoryId: z.string().min(1, { message: "La categoría es requerida" }),
+    date: z.string().refine((value) => !isNaN(Date.parse(value)), { message: "Elegí una fecha válida" }),
 })
 
 export const changeExpenseCategorySchema = z.object({

@@ -55,11 +55,11 @@ const Expenses = () => {
     }
   }
 
-  const sortedExpenses = [...expenses].sort((a, b) =>
-    order === 'recent'
-      ? new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      : new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-  )
+  const sortedExpenses = [...expenses].sort((a, b) => {
+    const diff = new Date(b.date).getTime() - new Date(a.date).getTime()
+      || new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    return order === 'recent' ? diff : -diff
+  })
 
   return (
     <section>

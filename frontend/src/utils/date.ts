@@ -18,12 +18,6 @@ export const longDateFormatter = new Intl.DateTimeFormat('es-AR', {
   year: 'numeric',
 })
 
-// Hora y minuto: "22:36".
-export const timeFormatter = new Intl.DateTimeFormat('es-AR', {
-  hour: '2-digit',
-  minute: '2-digit',
-})
-
 // Mes corto con año: "sept 2026" (gráfico de gastos por mes).
 export const monthFormatter = new Intl.DateTimeFormat('es-AR', {
   month: 'short',

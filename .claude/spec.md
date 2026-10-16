@@ -82,8 +82,10 @@ igual con o sin reasignar antes.
   lista el gasto), `description` (opcional, detalle extra), `paymentMethod`
   (`transfer` | `cash`), `categoryId` + `categorySnapshot` (nombre de la
   categoría al momento de cargar el gasto).
-- La fecha del gasto es la fecha de carga (`createdAt`). No se puede cargar
-  un gasto con fecha pasada ni futura distinta a hoy.
+- Un gasto tiene una `date`: el día en que se hizo el gasto, elegido al
+  cargarlo. Por defecto es hoy, pero puede ser un día pasado (gastos que se
+  cargan después). No puede ser una fecha futura. `createdAt` sigue siendo
+  la fecha de carga y no se usa para resúmenes ni reportes.
 - `categorySnapshot` se completa al crear el gasto y no cambia después,
   aunque la categoría se renombre o se desactive.
 - No hay edición de gastos ya cargados en v1: si algo está mal, se borra y
@@ -91,7 +93,7 @@ igual con o sin reasignar antes.
   `categorySnapshot` editado a mitad de camino.)
 - Al presionar un gasto (desde la sección de Gastos o desde el detalle de
   una categoría) se navega a su detalle, con `amount`, `name`, `description`,
-  `paymentMethod`, `categorySnapshot` y fecha (`createdAt`).
+  `paymentMethod`, `categorySnapshot` y fecha (`date`).
 - En el listado de gastos, si la categoría del gasto ya no existe (fue
   borrada), se muestra un indicador "(categoría eliminada)" junto al
   `categorySnapshot`. El `categorySnapshot` nunca deja de mostrarse; el
@@ -113,6 +115,9 @@ igual con o sin reasignar antes.
 - Crear gasto con `amount <= 0` → error de validación.
 - Crear gasto sin `name` (o con menos de 2 caracteres) → error de validación.
   `description` puede venir vacía.
+- Crear gasto sin `date` o con una fecha inválida → error de validación.
+- Un gasto cargado hoy con `date` de la semana pasada cuenta en los
+  reportes de la semana pasada, no en los de hoy.
 - Al crear el gasto, `categorySnapshot` queda igual al `name` de la
   categoría en ese momento, sin importar cambios posteriores.
 - Borrar un gasto no afecta la categoría ni otros gastos.
@@ -133,7 +138,7 @@ sobre los gastos existentes, no datos que se cargan aparte.
 
 | Pregunta | Cómo se resuelve |
 |---|---|
-| ¿Cuánto gasté este mes? | Suma de `amount` de gastos con `createdAt` en el mes actual. |
+| ¿Cuánto gasté este mes? | Suma de `amount` de gastos con `date` en el mes actual. |
 | ¿En qué se fue? ¿Qué proporción por rubro? | Suma de `amount` agrupada por el nombre actual de la categoría (vía `categoryId`), cada una como % del total del período. |
 | ¿Cómo vengo estos últimos días? | Suma de `amount` por día, últimos N días (incluye días en cero). |
 | ¿Este mes fue más caro que el anterior? ¿Por qué rubro? | Total del mes actual vs. mes anterior, y la misma comparación agrupada por el nombre actual de la categoría. |
@@ -232,7 +237,7 @@ categoría, se lista cada gasto.
   aparte, en otra sección/campo de la respuesta de Reportes.
 - El top 10 se calcula sobre todos los gastos cargados, sin filtro de
   período. Si hay menos de 10 gastos, se muestran los que haya. Ante un
-  empate de monto, va primero el más reciente.
+  empate de monto, va primero el de `date` más reciente.
 - En el top 10, la categoría de cada gasto muestra su `categorySnapshot`,
   con "(categoría eliminada)" si el `categoryId` ya no existe, o "(categoría
   editada, ahora {name actual})" si existe con otro nombre. Si el nombre

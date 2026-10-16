@@ -9,7 +9,7 @@ class CategoryRepository {
 
         const expenses = await Expense.find({ categoryId: id, userId })
             .select('-categoryId')
-            .sort({ createdAt: -1 }); //ese select quita el campo categoryId de los expenses, ya que no es necesario devolverlo en la respuesta
+            .sort({ date: -1, createdAt: -1 }); //ese select quita el campo categoryId de los expenses, ya que no es necesario devolverlo en la respuesta
 
         return { category, expenses };
     }
