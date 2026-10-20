@@ -29,6 +29,18 @@ class ExpenseService {
         return await expenseRepository.deleteExpense(id, userId)
     }
 
+    async editExpense(id, userId, expenseData) {
+
+        const expense = await expenseRepository.findById(id, userId)
+        if (!expense) {
+            const error = new Error('Gasto no encontrado')
+            error.status = 404
+            throw error
+        }
+
+        return await expenseRepository.editExpense(id, userId, expenseData)
+    }
+
     async reassignCategory(id, userId, categoryId) {
         const expense = await expenseRepository.findById(id, userId)
         if (!expense) {

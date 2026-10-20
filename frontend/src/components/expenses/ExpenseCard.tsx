@@ -6,6 +6,7 @@ import { shortDateFormatter } from '../../utils/date'
 const ExpenseCard = ({
   expense,
   onDelete,
+  onEdit,
   isDeleting,
   showCategory = true,
   otherCategories,
@@ -14,6 +15,7 @@ const ExpenseCard = ({
 }: {
   expense: Expense
   onDelete: () => void
+  onEdit?: () => void
   isDeleting?: boolean
   showCategory?: boolean
   otherCategories?: Category[]
@@ -96,6 +98,17 @@ const ExpenseCard = ({
             className="bi bi-chevron-down pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-[10px] text-ink/50"
           ></i>
         </div>
+      )}
+
+      {onEdit && (
+        <button
+          type="button"
+          onClick={onEdit}
+          aria-label={`Editar gasto ${expense.name}`}
+          className="grid size-8 shrink-0 cursor-pointer place-items-center rounded-full text-ink/35 transition-colors hover:bg-secondary/10 hover:text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/40 focus-visible:ring-offset-2"
+        >
+          <i className="bi bi-pencil text-sm"></i>
+        </button>
       )}
 
       <button

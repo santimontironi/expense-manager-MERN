@@ -88,9 +88,10 @@ igual con o sin reasignar antes.
   la fecha de carga y no se usa para resúmenes ni reportes.
 - `categorySnapshot` se completa al crear el gasto y no cambia después,
   aunque la categoría se renombre o se desactive.
-- No hay edición de gastos ya cargados en v1: si algo está mal, se borra y
-  se vuelve a cargar. (Evita reabrir la discusión de qué pasa con un
-  `categorySnapshot` editado a mitad de camino.)
+- Un gasto ya cargado se puede editar (`PATCH /api/expenses/:id`): solo
+  `amount`, `name`, `description`, `paymentMethod` y `date`. La categoría
+  no se edita por acá: se cambia con la reasignación desde el detalle de
+  categoría (ver Categorías), así que `categorySnapshot` nunca cambia.
 - Al presionar un gasto (desde la sección de Gastos o desde el detalle de
   una categoría) se navega a su detalle, con `amount`, `name`, `description`,
   `paymentMethod`, `categorySnapshot` y fecha (`date`).
@@ -256,6 +257,5 @@ categoría, se lista cada gasto.
 ## Fuera de alcance (v1)
 
 - Plata prestada / deudas (etapa futura, ver `context.md`).
-- Edición de gastos existentes.
 - Registro público de usuarios / multiusuario.
 - Presupuestos, metas, cuentas bancarias.

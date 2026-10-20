@@ -29,6 +29,17 @@ class ExpenseController {
         }
     }
 
+    async editExpense(req,res){
+        try{
+            const { id } = req.params
+            const expenseEdited = await expenseService.editExpense(id, req.user.id, req.body)
+            return res.status(200).json(expenseEdited)
+        }
+        catch (error) {
+            res.status(error.status || 500).json({ error: error.message });
+        }
+    }
+
     async reassignCategory(req, res) {
         try {
             const { id } = req.params;
