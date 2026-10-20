@@ -32,7 +32,7 @@ const MoneyByCategory = () => {
   }
 
   return (
-    <div className="rounded-3xl border border-ink/40 bg-primary px-4 py-4 shadow-[5px_5px_5px_rgba(0,0,0,0.30)] md:px-6 md:py-5">
+    <div className="self-start rounded-3xl border border-ink/40 bg-primary px-4 py-4 shadow-[5px_5px_5px_rgba(0,0,0,0.30)] md:px-6 md:py-5">
       <h3 className="text-lg font-semibold text-ink md:text-xl">Total de dinero gastado por categoría</h3>
 
       {data.length === 0 ? (
