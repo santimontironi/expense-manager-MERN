@@ -26,6 +26,8 @@ export const createExpenseSchema = z.object({
     date: z.string().refine((value) => !isNaN(Date.parse(value)), { message: "Elegí una fecha válida" }),
 })
 
+export const editExpenseSchema = createExpenseSchema.omit({ categoryId: true })
+
 export const changeExpenseCategorySchema = z.object({
     categoryId: z.string().min(1, { message: "La categoría es requerida" }),
 })

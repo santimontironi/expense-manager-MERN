@@ -1,5 +1,5 @@
 import api from "./api";
-import type { CreateExpenseCredentials } from "../types/expense.types";
+import type { CreateExpenseCredentials, EditExpenseCredentials } from "../types/expense.types";
 import { expenseSchema } from "../../../shared/schemas/expense-schema";
 
 export const createExpenseService = async (expenseData: CreateExpenseCredentials) => {
@@ -14,6 +14,11 @@ export const getAllExpensesService = async () => {
 
 export const deleteExpenseService = async (id: string) => {
     const response = await api.delete(`/expenses/${id}`)
+    return expenseSchema.parse(response.data)
+}
+
+export const editExpenseService = async ({ id, data }: { id: string; data: EditExpenseCredentials }) => {
+    const response = await api.patch(`/expenses/${id}`, data)
     return expenseSchema.parse(response.data)
 }
 

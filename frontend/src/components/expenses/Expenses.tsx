@@ -7,6 +7,7 @@ import { useDeleteExpense } from "../../hooks/expenses/useDeleteExpense"
 import ExpenseCard from "./ExpenseCard"
 import { useState } from "react"
 import AddExpenseModal from "./AddExpenseModal"
+import EditExpenseModal from "./EditExpenseModal"
 import type { Expense } from "../../types/expense.types"
 
 const Expenses = () => {
@@ -14,6 +15,7 @@ const Expenses = () => {
   const { mutate: deleteExpense, isPending: isDeleting } = useDeleteExpense()
 
   const [modalOpen, setModalOpen] = useState(false)
+  const [editModal, setEditModal] = useState<Expense | null>(null)
   const [order, setOrder] = useState<'recent' | 'oldest'>('recent')
 
   if (isLoading || !expenses) {
@@ -65,6 +67,8 @@ const Expenses = () => {
     <section>
 
       {modalOpen && <AddExpenseModal onClose={() => setModalOpen(false)} />}
+
+      {editModal && <EditExpenseModal expense={editModal} onClose={() => setEditModal(null)} />}
 
       <header className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-6">
         <div className="border-l-4 border-secondary pl-4 md:pl-6">
@@ -130,6 +134,7 @@ const Expenses = () => {
               <ExpenseCard
                 expense={expense}
                 onDelete={() => handleDelete(expense)}
+                onEdit={() => setEditModal(expense)}
                 isDeleting={isDeleting}
               />
             </li>

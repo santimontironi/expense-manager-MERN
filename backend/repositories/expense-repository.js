@@ -22,6 +22,10 @@ class ExpenseRepository {
         return await Expense.findOneAndUpdate({ _id: id, userId }, { categoryId }, { returnDocument: 'after' }).populate('categoryId', 'name');
     }
 
+    async editExpense(id, userId, expenseData) {
+        return await Expense.findOneAndUpdate({ _id: id, userId }, { ...expenseData }, { returnDocument: 'after' }).populate('categoryId', 'name');
+    }
+
 }
 
 const expenseRepository = new ExpenseRepository();
